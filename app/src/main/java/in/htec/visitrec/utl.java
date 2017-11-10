@@ -4,17 +4,19 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.CountDownTimer;
@@ -29,35 +31,39 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.text.Html;
 import android.text.InputType;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+
+import in.htec.visitrec.utils.FileOperations;
+import in.htec.visitrec.utils.GenricCallback;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -71,9 +77,11 @@ public class utl {
     public static boolean DISPLAY_ENABLED=true;
     public static boolean DEBUG_ENABLED=true;
 
+    public static Gson js=new Gson();
 
     public static Context ctx;
 
+    /*********************************************************/
     public static void init(Context ctxx)
     {
         ctx=ctxx;
@@ -126,7 +134,7 @@ public class utl {
     public static int getColor(@ColorRes int c)
     {
         int col=0;
-        col=ctx.getResources().getColor(R.color.orange);
+        col=ctx.getResources().getColor(c);
         return col;
     }
 
@@ -157,6 +165,59 @@ public class utl {
         return windowManager.getDefaultDisplay().getWidth();
 
     }
+
+
+    public  static void SlideUP(View view, Context context)
+    {
+        view.startAnimation(AnimationUtils.loadAnimation(context,
+                R.anim.slid_up));
+    }
+
+    public static void SlideDown(View view, Context context)
+    {
+        view.startAnimation(AnimationUtils.loadAnimation(context,
+                R.anim.slid_down));
+    }
+
+
+    public static String CLAN_PRO_NORMAL="ClanPro-Book.otf",
+            RUBIK="Rubik-Regular.ttf"
+            ,AVENIR_MED="Avenir-Medium.ttf"
+            , CAVIAR="CaviarDreams.ttf",ROBOTO_THIN="Roboto-Thin.ttf";
+
+
+    public static Typeface getFace(String font,Context ctx)
+    {
+        Typeface face = Typeface.createFromAsset(ctx.getAssets(),
+                "fonts/"+font);
+
+        if(face==null)
+        {
+            face=Typeface.createFromAsset(ctx.getAssets(),
+                    "fonts/"+AVENIR_MED);
+        }
+        return face;
+
+    }
+
+
+
+    public static Typeface setFace(String font,TextView textView)
+    {
+        Context ctx=textView.getContext();
+        Typeface face = Typeface.createFromAsset(ctx.getAssets(),
+                "fonts/"+font);
+
+        if(face==null)
+        {
+            face= Typeface.createFromAsset(ctx.getAssets(),
+                    "fonts/"+AVENIR_MED);
+        }
+        textView.setTypeface(face);
+        return face;
+
+    }
+
 
 
 
@@ -205,10 +266,6 @@ public class utl {
     }
 
 
-    public static boolean isNull(String is)
-    {
-        return is==null||(""+is).equals("null");
-    }
     public static  boolean isValidMobile(String phone)
     {
         return android.util.Patterns.PHONE.matcher(phone).matches();
@@ -298,6 +355,7 @@ public class utl {
 
     public static void logout()
     {
+
         try {
             removeUserData();
 
@@ -308,9 +366,11 @@ public class utl {
     }
 
 
+
     public static int getApkVerison(Context ctx)
     {
         try{
+            int x;
             int versionCode = BuildConfig.VERSION_CODE;
             String versionName = BuildConfig.VERSION_NAME;
             return versionCode;
@@ -322,13 +382,83 @@ public class utl {
     }
 
 
-    @SuppressWarnings("ResourceType")
-    public static void changeColorDrawable(ImageView imageView, @DrawableRes int res) {
 
-        DrawableCompat.setTint(imageView.getDrawable(), ContextCompat.getColor(ctx, res));
+    public static void changeColorDrawable(ImageView imageView, @ColorRes int res) {
+
+        try {
+            DrawableCompat.setTint(imageView.getDrawable(), ContextCompat.getColor(imageView.getContext(), res));
+        } catch (Exception e) {
+          //  e.printStackTrace();
+            utl.l("Drawable TintErr 409");
+        }
 
 
+    }
 
+
+    public static int getDominantColor1(Bitmap bitmap) {
+
+        if (bitmap == null)
+            throw new NullPointerException();
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int size = width * height;
+        int pixels[] = new int[size];
+
+        Bitmap bitmap2 = bitmap.copy(Bitmap.Config.ARGB_4444, false);
+
+        bitmap2.getPixels(pixels, 0, width, 0, 0, width, height);
+
+        final List<HashMap<Integer, Integer>> colorMap = new ArrayList<HashMap<Integer, Integer>>();
+        colorMap.add(new HashMap<Integer, Integer>());
+        colorMap.add(new HashMap<Integer, Integer>());
+        colorMap.add(new HashMap<Integer, Integer>());
+
+        int color = 0;
+        int r = 0;
+        int g = 0;
+        int b = 0;
+        Integer rC, gC, bC;
+        for (int i = 0; i < pixels.length; i++) {
+            color = pixels[i];
+
+            r = Color.red(color);
+            g = Color.green(color);
+            b = Color.blue(color);
+
+            rC = colorMap.get(0).get(r);
+            if (rC == null)
+                rC = 0;
+            colorMap.get(0).put(r, ++rC);
+
+            gC = colorMap.get(1).get(g);
+            if (gC == null)
+                gC = 0;
+            colorMap.get(1).put(g, ++gC);
+
+            bC = colorMap.get(2).get(b);
+            if (bC == null)
+                bC = 0;
+            colorMap.get(2).put(b, ++bC);
+        }
+
+        int[] rgb = new int[3];
+        for (int i = 0; i < 3; i++) {
+            int max = 0;
+            int val = 0;
+            for (Map.Entry<Integer, Integer> entry : colorMap.get(i).entrySet()) {
+                if (entry.getValue() > max) {
+                    max = entry.getValue();
+                    val = entry.getKey();
+                }
+            }
+            rgb[i] = val;
+        }
+
+        int dominantColor = Color.rgb(rgb[0], rgb[1], rgb[2]);
+
+        return dominantColor;
     }
 
 
@@ -412,7 +542,6 @@ public class utl {
 
 
 
-
     public static void snack(View rootView,String t)
     {
 
@@ -433,6 +562,65 @@ public class utl {
     }
 
 
+    public static void snack(Activity act,String t,String a,final GenricCallback cb)
+    {
+
+        View rootView = act.getWindow().getDecorView().getRootView();
+
+        Snackbar snackbar = Snackbar.make(rootView,  ""+t, Snackbar.LENGTH_LONG);
+        snackbar.setActionTextColor(act.getResources().getColor(R.color.grey_100));
+        snackbar.setAction("" + a, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cb.onStart();
+            }
+        });
+        View snackbarView = snackbar.getView();
+        snackbarView.setBackgroundColor(act.getResources().getColor(R.color.red_300));
+
+        int snackbarTextId = android.support.design.R.id.snackbar_text;
+        TextView textView = (TextView)snackbarView.findViewById(snackbarTextId);
+        textView.setTextColor(Color.WHITE);
+
+        if(DISPLAY_ENABLED)
+            snackbar.show();
+
+    }
+
+
+
+
+
+
+    public static void snack(View rootView,String t,String a,final GenricCallback cb)
+    {
+
+        Context act=rootView.getContext();
+
+        Snackbar snackbar = Snackbar.make(rootView,  ""+t, Snackbar.LENGTH_LONG);
+        snackbar.setActionTextColor(act.getResources().getColor(R.color.grey_100));
+        snackbar.setAction("" + a, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cb.onStart();
+            }
+        });
+        View snackbarView = snackbar.getView();
+        snackbarView.setBackgroundColor(act.getResources().getColor(R.color.red_300));
+
+        int snackbarTextId = android.support.design.R.id.snackbar_text;
+        TextView textView = (TextView)snackbarView.findViewById(snackbarTextId);
+        textView.setTextColor(Color.WHITE);
+
+        if(DISPLAY_ENABLED)
+            snackbar.show();
+
+    }
+
+
+
+
+
 
     public static interface ClickCallBack{
 
@@ -447,6 +635,29 @@ public class utl {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setMessage(desc);
+        alertDialogBuilder.setNeutralButton(action, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                click.done(dialogInterface);
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
+    public static void diag(Context c,String title,String desc,boolean isCancellable,String action,final ClickCallBack click)
+    {
+
+
+
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setMessage(desc);
+        alertDialogBuilder.setCancelable(isCancellable);
         alertDialogBuilder.setNeutralButton(action, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -504,8 +715,6 @@ public class utl {
     }
 
 
-
-
     public static interface InputDialogCallback {
         public void onDone(String text);
     }
@@ -535,8 +744,7 @@ public class utl {
                 new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
-                        // TODO Auto-generated method stub
-                        return;
+                         return;
                     }
                 });
 
@@ -570,22 +778,34 @@ public class utl {
 
 
     public static String getRealPathFromUri(Uri uri) {
-        String result = "";
-        String documentID;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            String[] pathParts = uri.getPath().split("/");
-            documentID = pathParts[pathParts.length - 1];
-        } else {
-            String pathSegments[] = uri.getLastPathSegment().split(":");
-            documentID = pathSegments[pathSegments.length - 1];
+        String result = null;
+        try {
+            if(uri==null)
+                return null;
+
+            String documentID;
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                String[] pathParts = uri.getPath().split("/");
+                documentID = pathParts[pathParts.length - 1];
+            } else {
+                String pathSegments[] = uri.getLastPathSegment().split(":");
+                documentID = pathSegments[pathSegments.length - 1];
+            }
+            String mediaPath = MediaStore.Images.Media.DATA;
+
+            Cursor imageCursor = ctx.getContentResolver().query(uri, new String[]{mediaPath}, MediaStore.Images.Media._ID + "=" + documentID, null, null);
+            if (imageCursor.moveToFirst()) {
+                result = imageCursor.getString(imageCursor.getColumnIndex(mediaPath));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        String mediaPath = MediaStore.Images.Media.DATA;
-        Cursor imageCursor = ctx.getContentResolver().query(uri, new String[]{mediaPath}, MediaStore.Images.Media._ID + "=" + documentID, null, null);
-        if (imageCursor.moveToFirst()) {
-            result = imageCursor.getString(imageCursor.getColumnIndex(mediaPath));
-        }
+        if(result==null)
+            result=uri.getPath().replace("file://","").replace("%20"," ");
+        utl.l("Found File path "+result);
         return result;
     }
+
 
 
 
@@ -624,7 +844,6 @@ public class utl {
 
     }
 
-
     public static void copyFile(File src,File dst)
     {
         try{
@@ -651,6 +870,36 @@ public class utl {
 
 
     }
+
+
+    public static  boolean writeData(String text)
+    {
+        String data= Constants.localDataFile();
+        FileOperations fop=new FileOperations();
+        Gson g=new Gson();
+        fop.write(data,text);
+        Log.d("DATA WROTE",""+fop.read(data));
+        return  true;
+    }
+
+
+
+
+    public static String readData()
+    {
+        String data= Constants.localDataFile();
+        if(!new File(data).exists())
+            return null;
+        FileOperations fop=new FileOperations();
+
+        Log.d("DATA READ",""+fop.read(data));
+        return  fop.read(data);
+
+
+
+    }
+
+
 
 
     public static  boolean writeFile(String file,String text)
@@ -681,22 +930,36 @@ public class utl {
 
     }
 
-
-
-    public static  boolean writeData(String text)
+    public static void clearCache()
     {
-        String data= Constants.userDataFile();
-        FileOperations fop=new FileOperations();
-        Gson g=new Gson();
-        fop.write(data,text);
-        Log.d("DATA WROTE",""+fop.read(data));
-        return  true;
+
+        File cache=new File(Constants.getFolder());
+        for(File f: cache.listFiles())
+        {
+
+            f.delete();
+
+        }
+
+
+        File folder=new File(Constants.getFolder());
+        for(File f: folder.listFiles())
+        {
+            if(f.getName().contains(".mp4")||f.getName().contains(".png"))
+            {
+                f.delete();
+            }
+        }
+
+
+
     }
+
 
 
     public static  boolean removeData()
     {
-        String data= Constants.userDataFile();
+        String data= Constants.localDataFile();
         File f=new File(data);
         f.delete();
         return  true;
@@ -749,6 +1012,7 @@ public class utl {
 
 
 
+
     public static GenricUser readUserData()
     {
         String data= Constants.userDataFile();
@@ -796,14 +1060,15 @@ public class utl {
                 dialog.getWindow().getAttributes().alpha = 0.7f;
 
 
-
-                dialog.setTitle("Select Content Language");
-
                 dialog.setContentView(R.layout.gen_load);
                 //  dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.setCancelable(true);
+
                 dialog.show();
+                AVLoadingIndicatorView splashView=(AVLoadingIndicatorView)dialog.findViewById(R.id.splash_view2);
+                splashView.show();
+
 
             }
             else   {
@@ -824,91 +1089,36 @@ public class utl {
     }
 
 
+    public static boolean saveVideoThumb(String filenameTarget,String video)
+    {
+        Bitmap bmp;
 
+        bmp = ThumbnailUtils.createVideoThumbnail(video, MediaStore.Video.Thumbnails.MINI_KIND);
 
-
-    public static void logEvent(String title,Object b){
-
-
+        FileOutputStream out = null;
         try {
-            String ins=utl.getDateTime();
-
-           //  App.ses.child(utl.refineString( ins,"_")).child("data").setValue((new Gson()).toJson(b).replace("\\\"","\"").replace("\"{","{").replace("}\"","}"));
+            out = new FileOutputStream(filenameTarget);
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+            // PNG is a lossless format, the compression factor (100) is ignored
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-    }
 
+        finally {
+            try {
+                if (out != null) {
+                    out.close();
+                    return true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
 
-    public static String dev()
-    {
-        return "_"+utl.refineString(Build.DEVICE,"_")+"_"+utl.refineString(Build.MANUFACTURER,"_");
-    }
-
-    public static String getRealPathFromUri(Context ctx,Uri uri) {
-        String result = "";
-        String documentID;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            String[] pathParts = uri.getPath().split("/");
-            documentID = pathParts[pathParts.length - 1];
-        } else {
-            String pathSegments[] = uri.getLastPathSegment().split(":");
-            documentID = pathSegments[pathSegments.length - 1];
-        }
-        String mediaPath = MediaStore.Images.Media.DATA;
-        Cursor imageCursor = ctx.getContentResolver().query(uri, new String[]{mediaPath}, MediaStore.Images.Media._ID + "=" + documentID, null, null);
-        if (imageCursor.moveToFirst()) {
-            result = imageCursor.getString(imageCursor.getColumnIndex(mediaPath));
-        }
-        return result;
-    }
-
-
-
-    public  static void setLiked(String vid)
-    {        createLike();
-
-        FileOperations fop=new FileOperations();
-        String ol=""+fop.read(Constants.localDataFile());
-        ol=ol+","+vid;
-
-        fop.write(Constants.localDataFile(),ol);
-
-
-    }
-
-    public static void unLike(String vid)
-    {
-        createLike();
-        FileOperations fop=new FileOperations();
-        String ol=fop.read(Constants.localDataFile());
-        ol=ol+","+vid;
-        ol=ol.replace(vid,"");
-
-        fop.write(Constants.localDataFile(),ol);
-
-
-    }
-
-    public static void createLike()
-    {
-
-        FileOperations fop=new FileOperations();
-        if(new File(Constants.localDataFile()).exists());
-        else
-            fop.write(Constants.localDataFile(),"");
-    }
-
-    public  static boolean isLiked(String vid)
-    {        createLike();
-
-        FileOperations fop=new FileOperations();
-        String ol=""+fop.read(Constants.localDataFile());
-        if(ol.contains(vid))
-            return true;
-        else
             return false;
+        }
+
 
     }
 

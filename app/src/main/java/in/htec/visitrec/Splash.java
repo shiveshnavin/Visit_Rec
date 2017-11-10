@@ -53,23 +53,30 @@ public class Splash extends AppCompatActivity {
         adap.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         houseno.setAdapter(adap);
-        houseno.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
+        houseno.postDelayed(new Runnable() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view,
-                                       final  int position, long id) {
+            public void run() {
+
+                houseno.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view,
+                                               final  int position, long id) {
+
+
+
+                        utl.snack(act,houses.get(position).name);
 
 
 
 
 
-
-
-
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapter) {  }
+                });
             }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapter) {  }
-        });
+        },700);
 
 
     }

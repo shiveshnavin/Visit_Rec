@@ -1,4 +1,4 @@
-package in.htec.visitrec;
+package in.htec.visitrec.utils;
 
 
 import java.io.BufferedReader;

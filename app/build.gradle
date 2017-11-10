@@ -31,6 +31,6 @@ dependencies {
     compile 'com.daniribalbert:custom-font-lib:0.9.8'
     compile 'com.android.support:design:25.1.1'
     compile 'com.google.code.gson:gson:2.4'
-
+    compile 'com.wang.avi:library:2.1.3'
 
 }
