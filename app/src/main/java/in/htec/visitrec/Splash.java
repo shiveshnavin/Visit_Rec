@@ -13,10 +13,14 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import in.htec.visitrec.adapters.SpinAdapter;
@@ -105,6 +109,15 @@ public class Splash extends AppCompatActivity {
         setUpUGS(houses);
 
 
+        findViewById(R.id.send).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+               send();
+
+
+            }
+        });
 
 
 
@@ -126,7 +139,7 @@ public class Splash extends AppCompatActivity {
 
         rq.email=email.getText().toString();
 
-        String body="Visitor Details :- \n"+
+      final  String body="Visitor Details :- \n"+
                 "House : "+rq.house.name+"\n"+
                 "Field 1 : "+rq.email+"\n"+
                 "Field 2 : "+rq.field2+"\n"+
@@ -135,6 +148,39 @@ public class Splash extends AppCompatActivity {
                 "Field 5 : "+rq.field5+"\n";
 
         String sub="Visitor Details";
+
+
+        utl.inputDialog(ctx, "Enter IP", "Eg. 192.168.43.1", utl.TYPE_PHONE, new utl.InputDialogCallback() {
+            @Override
+            public void onDone(String text) {
+
+                AndroidNetworking.initialize(ctx);
+                String url="http://"+text+"/mail.php?recipient="+rq.email+"&subject="+ URLEncoder.encode("New Visitor")
+                        +"&body="+ URLEncoder.encode(body)
+                        ;
+
+                utl.l(url);
+                utl.showDig(true,ctx);
+;                AndroidNetworking.get(url).build().getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        utl.showDig(false,ctx);
+
+                        utl.diag(act,"DONE",response);
+                    }
+
+                    @Override
+                    public void onError(ANError ANError) {                        utl.showDig(false,ctx);
+
+                        utl.diag(act,"ERROR : " ,ANError.getErrorBody());
+
+                    }
+                });
+
+
+
+            }
+        });
 
     }
 
@@ -145,9 +191,6 @@ public class Splash extends AppCompatActivity {
         adap.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         houseno.setAdapter(adap);
-        houseno.postDelayed(new Runnable() {
-            @Override
-            public void run() {
 
                 houseno.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -169,8 +212,7 @@ public class Splash extends AppCompatActivity {
                     @Override
                     public void onNothingSelected(AdapterView<?> adapter) {  }
                 });
-            }
-        },700);
+
 
 
     }
