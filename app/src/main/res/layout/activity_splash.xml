@@ -1,26 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="in.htec.visitrec.Splash">
+<ScrollView
+    android:layout_above="@+id/go"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
-
-    <Spinner
-        android:background="@drawable/rounded_black_hollow"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent">
+
+        <Spinner
+            android:background="@drawable/rounded_black_hollow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/houseno" />
+
+
+        <com.daniribalbert.customfontlib.views.CustomFontTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Owner Name Here"
+            app:font="Avenir-Medium"
+            android:id="@+id/details" />
+
+        <com.daniribalbert.customfontlib.views.CustomFontEditText
+            android:layout_margin="10dp"
+            android:id="@+id/field1"
+            android:hint="Field 1"
+            app:font="Avenir-Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <com.daniribalbert.customfontlib.views.CustomFontEditText
+            android:layout_margin="10dp"
+            android:id="@+id/field2"
+            android:hint="Field 2"
+            app:font="Avenir-Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+        <com.daniribalbert.customfontlib.views.CustomFontEditText
+            android:layout_margin="10dp"
+            android:id="@+id/field3"
+            android:hint="Field 3"
+            app:font="Avenir-Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+        <com.daniribalbert.customfontlib.views.CustomFontEditText
+            android:layout_margin="10dp"
+            android:id="@+id/field4"
+            android:hint="Field 4"
+            app:font="Avenir-Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+        <com.daniribalbert.customfontlib.views.CustomFontEditText
+            android:layout_margin="10dp"
+            android:id="@+id/field5"
+            android:hint="Field 5"
+            app:font="Avenir-Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+
+    </LinearLayout>
+
+
+</ScrollView>
+
+    <com.daniribalbert.customfontlib.views.CustomFontTextView
+        android:text="GO"
+        android:textColor="@color/white"
+        android:background="@color/green_300"
+        android:textSize="17sp"
+        app:font="Avenir-Medium"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/go"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="198dp"
-        android:id="@+id/houseno" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

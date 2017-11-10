@@ -32,6 +32,11 @@ public class Constants {
     {
         utl.init(ctx);
         ctx=context;
+        File file=new File(getFolder());
+        if(!file.exists())
+        {
+            file.mkdir();
+        }
     }
 
     private static String FIRE_BASE="https://test-a0930.firebaseio.com/";

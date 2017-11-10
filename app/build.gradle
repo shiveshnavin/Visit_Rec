@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
 }
 
 dependencies {
@@ -32,5 +36,8 @@ dependencies {
     compile 'com.android.support:design:25.1.1'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.wang.avi:library:2.1.3'
+    compile 'net.bozho.easycamera:easycamera:0.0.1:aar@aar'
+
+    compile 'io.fotoapparat.fotoapparat:library:1.4.1'
 
 }

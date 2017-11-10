@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <declare-styleable name="NewsDigestSplashView">
+        <attr name="removeFromParentOnEnd" format="boolean"/>
+        <attr name="circleRadius" format="reference"/>
+        <attr name="rotationRadius" format="reference"/>
+        <attr name="rotationDuration" format="integer"/>
+        <attr name="splashDuration" format="integer"/>
+        <attr name="splashBackgroundColor" format="color"/>
+        <attr name="circleColors" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="GoalProgressBar">
+        <attr name="goalIndicatorHeight" format="dimension"/>
+        <attr name="goalIndicatorThickness" format="dimension"/>
+        <attr name="goalReachedColor" format="color"/>
+        <attr name="goalNotReachedColor" format="color"/>
+        <attr name="unfilledSectionColor" format="color"/>
+        <attr name="barThickness" format="dimension"/>
+        <attr name="indicatorType" format="enum">
+            <enum name="line" value="0"/>
+            <enum name="circle" value="1"/>
+            <enum name="square" value="2"/>
+        </attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="CircleButton">
+        <attr name="cb_color" format="color" />
+        <attr name="cb_pressedRingWidth" format="dimension" />
+    </declare-styleable>
+
+
+
+</resources>
