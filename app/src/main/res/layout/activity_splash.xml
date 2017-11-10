@@ -11,10 +11,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+
 
         <Spinner
             android:background="@drawable/rounded_black_hollow"
@@ -25,21 +33,24 @@
 
         <com.daniribalbert.customfontlib.views.CustomFontTextView
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:text="Owner Name Here"
             app:font="Avenir-Medium"
             android:id="@+id/details" />
 
         <com.daniribalbert.customfontlib.views.CustomFontEditText
+            android:maxLines="1"
             android:layout_margin="10dp"
-            android:id="@+id/field1"
-            android:hint="Field 1"
+            android:id="@+id/email"
+            android:hint="EMAIL"
             app:font="Avenir-Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
 
         <com.daniribalbert.customfontlib.views.CustomFontEditText
+            android:maxLines="1"
             android:layout_margin="10dp"
             android:id="@+id/field2"
             android:hint="Field 2"
@@ -50,6 +61,7 @@
 
 
         <com.daniribalbert.customfontlib.views.CustomFontEditText
+            android:maxLines="1"
             android:layout_margin="10dp"
             android:id="@+id/field3"
             android:hint="Field 3"
@@ -60,6 +72,7 @@
 
 
         <com.daniribalbert.customfontlib.views.CustomFontEditText
+            android:maxLines="1"
             android:layout_margin="10dp"
             android:id="@+id/field4"
             android:hint="Field 4"
@@ -70,6 +83,7 @@
 
 
         <com.daniribalbert.customfontlib.views.CustomFontEditText
+            android:maxLines="1"
             android:layout_margin="10dp"
             android:id="@+id/field5"
             android:hint="Field 5"
@@ -86,7 +100,7 @@
 </ScrollView>
 
     <com.daniribalbert.customfontlib.views.CustomFontTextView
-        android:text="GO"
+        android:text="SEND"
         android:textColor="@color/white"
         android:background="@color/green_300"
         android:textSize="17sp"

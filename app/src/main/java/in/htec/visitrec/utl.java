@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -48,6 +49,7 @@ import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -1034,6 +1036,64 @@ public class utl {
             return  null;
         }
     }
+
+
+
+
+    public static Bitmap convertBitmap(Context ctx,  String  path,int q)   {
+
+
+        Log.d("path",path);
+
+        Bitmap bitmap=null;
+        BitmapFactory.Options bfOptions=new BitmapFactory.Options();
+        bfOptions.inDither=false;                     //Disable Dithering mode
+        bfOptions.inPurgeable=true;                   //Tell to gc that whether itneeds free memory, the Bitmap can be cleared
+        bfOptions.inInputShareable=true;              //Which kind of reference will be                used to recover the Bitmap data after being clear, when it will be used in the future
+        bfOptions.inTempStorage=new byte[32 * 1024];
+        File file=new File(path);
+        FileInputStream fs=null;
+        try {
+            fs = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            if(fs!=null)
+            {
+                bitmap= BitmapFactory.decodeFileDescriptor(fs.
+                        getFD(), null, bfOptions);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally{
+            if(fs!=null) {
+                try {
+                    fs.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        Bitmap bitmap1=Bitmap.createScaledBitmap(bitmap,(int)(bitmap.getWidth()*(q/100)),
+                (int)(bitmap.getHeight()*(q/100)),true);
+
+        try{
+
+            bitmap.recycle();;
+            bitmap=null;
+
+        }catch (Exception e)
+        {
+            Log.d("Recycle fail","Never Ming at convertBitmap()")
+            ;            e.printStackTrace();
+        }
+        return bitmap1;
+    }
+
+
 
 
 

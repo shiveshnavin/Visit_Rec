@@ -10,7 +10,7 @@ public class House {
 
     public int id=1;
     public String name="Houses Name";
-    public String owner="Houses Name";
+    public String owner="Mr. Abhinav ";
     public String addr="Houses Name";
     public String passwd="Houses Name";
 
@@ -19,11 +19,12 @@ public class House {
     public House()
     {}
 
-    public House(int n,String na)
+    public House(int n,String na,String ow)
     {
 
         id=n;
         name=na;
+        owner=ow;
 
     }
 

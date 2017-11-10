@@ -41,14 +41,36 @@ public class Click extends AppCompatActivity {
         act=this;
 
         Constants.init(ctx);
-        requestPermission();
+        try {
+            requestPermission();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            fotoapparat.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        fotoapparat.stop();
+    }
+
+    Fotoapparat fotoapparat;
     public void setUpCam()
     {
         try {
             CameraView cameraView = (CameraView) findViewById(R.id.cam);
-            final Fotoapparat fotoapparat = Fotoapparat
+                fotoapparat = Fotoapparat
                     .with(ctx)
                     .into(cameraView)
                     .build();
@@ -59,13 +81,15 @@ public class Click extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    String file=Constants.getFolder()+"/"+ SystemClock.uptimeMillis()+"bmp.png";
+                    String file=Constants.getFolder()+"/"+ SystemClock.uptimeMillis()+"bmp.jpg";
                     fotoapparat
                             .takePicture()
                             .saveToFile(new File(file));
                    // utl.snack(act,"SAVED !");
 
-
+                    Intent it=new Intent(ctx,Splash.class);
+                    it.putExtra("img",file);
+                    startActivity(it);
 
 
 
@@ -85,9 +109,10 @@ public class Click extends AppCompatActivity {
     private void requestPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
                 ) {
             ActivityCompat
-                    .requestPermissions(act, new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
+                    .requestPermissions(act, new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
         }
         else {
             setUpCam();
