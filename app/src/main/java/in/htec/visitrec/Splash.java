@@ -150,37 +150,47 @@ public class Splash extends AppCompatActivity {
         String sub="Visitor Details";
 
 
-        utl.inputDialog(ctx, "Enter IP", "Eg. 192.168.43.1", utl.TYPE_PHONE, new utl.InputDialogCallback() {
+        Constants.HOST=utl.getKey("ip",ctx);
+        if(Constants.HOST!=null)
+        {
+            AndroidNetworking.initialize(ctx);
+            String url=Constants.HOST+"/mail.php?recipient="+rq.email+"&subject="+ URLEncoder.encode("New Visitor")
+                    +"&body="+ URLEncoder.encode(body)
+                    ;
+
+            utl.l(url);
+            utl.showDig(true,ctx);
+            ;                AndroidNetworking.get(url).build().getAsString(new StringRequestListener() {
             @Override
-            public void onDone(String text) {
+            public void onResponse(String response) {
+                utl.showDig(false,ctx);
 
-                AndroidNetworking.initialize(ctx);
-                String url="http://"+text+"/mail.php?recipient="+rq.email+"&subject="+ URLEncoder.encode("New Visitor")
-                        +"&body="+ URLEncoder.encode(body)
-                        ;
+                utl.diag(act,"DONE",response);
+            }
 
-                utl.l(url);
-                utl.showDig(true,ctx);
-;                AndroidNetworking.get(url).build().getAsString(new StringRequestListener() {
-                    @Override
-                    public void onResponse(String response) {
-                        utl.showDig(false,ctx);
+            @Override
+            public void onError(ANError ANError) {                        utl.showDig(false,ctx);
 
-                        utl.diag(act,"DONE",response);
-                    }
-
-                    @Override
-                    public void onError(ANError ANError) {                        utl.showDig(false,ctx);
-
-                        utl.diag(act,"ERROR : " ,ANError.getErrorBody());
-
-                    }
-                });
-
-
+                utl.diag(act,"ERROR : " ,ANError.getErrorBody());
 
             }
         });
+
+
+        }
+        else{
+
+            utl.inputDialog(ctx, "Enter IP", "Eg. 192.168.43.1", utl.TYPE_PHONE, new utl.InputDialogCallback() {
+                @Override
+                public void onDone(String text) {
+
+                 utl.setKey("ip","http://"+text,ctx);
+
+                }
+            });
+
+        }
+
 
     }
 

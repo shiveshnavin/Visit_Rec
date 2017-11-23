@@ -814,6 +814,24 @@ public class utl {
     public static final String MY_PREFS_NAME = "wootwoot";
     public static  SharedPreferences.Editor editor;// = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
 
+    public static void setKey(String k,String v,Context ctx)
+    {
+
+        editor = ctx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString(""+k, ""+v);
+
+        editor.commit();
+
+    }
+
+    public static String getKey(String k,Context ctx)
+    {
+        SharedPreferences prefs = ctx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String restoredText = prefs.getString("installed", null);
+
+        return restoredText;
+    }
+
     public static void setShared(Context ctx)
     {
         /*
