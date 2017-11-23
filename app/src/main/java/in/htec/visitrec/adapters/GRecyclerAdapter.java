@@ -64,7 +64,7 @@ public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.Cust
     }
 
 
-    public class Dummy
+    public static class Dummy
     {
         String data="TEST";
 

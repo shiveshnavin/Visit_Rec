@@ -25,10 +25,38 @@
     </android.support.v7.widget.RecyclerView>
 
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:id="@+id/placeholder"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/ic_youtube"
+            android:id="@+id/plc_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    <com.daniribalbert.customfontlib.views.CustomFontTextView
+        app:font="Avenir-Medium"
+        android:gravity="center"
+            android:text="No Records Yet !"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+
+
+    </LinearLayout>
 
 
     <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/splash_view2"
+        android:id="@+id/loading"
         android:layout_gravity="center"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
