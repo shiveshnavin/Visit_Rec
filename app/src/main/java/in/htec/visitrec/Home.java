@@ -11,11 +11,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.wang.avi.AVLoadingIndicatorView;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 
 import in.htec.visitrec.adapters.GRecyclerAdapter;
+import in.htec.visitrec.database.Visit;
 import in.htec.visitrec.utils.DateTimePicker;
 
 public class Home extends AppCompatActivity {
@@ -29,6 +35,7 @@ public class Home extends AppCompatActivity {
     public Context ctx;
     public Activity act;
 
+    ArrayList<GRecyclerAdapter.Dummy> dummies=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,22 +47,13 @@ public class Home extends AppCompatActivity {
         rec =(RecyclerView)findViewById(R.id.rec);
 
 
-        ArrayList<GRecyclerAdapter.Dummy> dummies=new ArrayList<>();
-        dummies.add(new GRecyclerAdapter.Dummy());
-        dummies.add(new GRecyclerAdapter.Dummy());
-        dummies.add(new GRecyclerAdapter.Dummy());
-        dummies.add(new GRecyclerAdapter.Dummy());
-        dummies.add(new GRecyclerAdapter.Dummy());
-        dummies.add(new GRecyclerAdapter.Dummy());
-        dummies.add(new GRecyclerAdapter.Dummy());
-        dummies.add(new GRecyclerAdapter.Dummy());
-        dummies.add(new GRecyclerAdapter.Dummy());
-        dummies.add(new GRecyclerAdapter.Dummy());
 
-        GRecyclerAdapter adapter=new GRecyclerAdapter(ctx,dummies);
-        rec.setLayoutManager(new LinearLayoutManager(act));
-        rec.setAdapter(adapter);
-
+        dt=new DateTimePicker(act, DateTimePicker.DATE_TIME, new DateTimePicker.DateTimeCallback() {
+            @Override
+            public void picked(String dateTime) {
+                utl.snack(act,dateTime);
+            }
+        });
 
 
 
@@ -69,14 +67,76 @@ public class Home extends AppCompatActivity {
             }
         });
 
+        String url=Constants.HOST+Constants.API_GET_VISITS;
+        utl.l(url);
+
+        load(LOADING);
+        AndroidNetworking.get(url).build().getAsJSONArray(new JSONArrayRequestListener() {
+            @Override
+            public void onResponse(JSONArray response) {
+                dummies=new ArrayList<>();
+
+                try{
+
+                    for(int i=0;i<response.length();i++)
+                    {
 
 
+                        GRecyclerAdapter.Dummy vt=utl.js.fromJson(response.get(i).toString(), GRecyclerAdapter.Dummy.class);
+
+
+                        dummies.add(vt);
+
+                    }
+
+
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+
+
+
+
+
+                setUpList(dummies);
+
+
+
+                load(LOADED);
+
+            }
+
+            @Override
+            public void onError(ANError ANError) {
+
+
+
+                load(EMPTY);
+                utl.l(ANError.getErrorDetail());
+            }
+        });
 
 
 
 
 
     }
+
+
+
+    public void setUpList(ArrayList<GRecyclerAdapter.Dummy> dummies)
+    {
+
+
+        GRecyclerAdapter adapter=new GRecyclerAdapter(ctx,dummies);
+        rec.setLayoutManager(new LinearLayoutManager(act));
+        rec.setAdapter(adapter);
+
+
+    }
+
 
     RecyclerView rec;
     final int LOADING=12,EMPTY=13,LOADED=14;

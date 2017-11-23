@@ -13,10 +13,10 @@ public class Constants {
 
 
 
-    public static String HOST=null;//"http://192.168.23.3";
+    public static String HOST= "http://192.168.1.101/visitrec";
 
     //@ID (ID of house)
-    public static String API_GET_VISITS="/get_tours.php";
+    public static String API_GET_VISITS="/api/get_tours.php";
     public static String API_USER_LOGIN_GET="/login.php";
 
 
