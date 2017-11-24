@@ -817,8 +817,9 @@ public class utl {
     public static void setKey(String k,String v,Context ctx)
     {
 
+        utl.l("KEY SET Key:  -"+k+ "- VAL: "+v);
         editor = ctx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-        editor.putString(""+k, ""+v);
+        editor.putString(k,v);
 
         editor.commit();
 
@@ -827,7 +828,9 @@ public class utl {
     public static String getKey(String k,Context ctx)
     {
         SharedPreferences prefs = ctx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        String restoredText = prefs.getString("installed", null);
+        String restoredText = prefs.getString(k, null);
+
+        utl.l("KEY GET : "+k+" VAL: "+restoredText);
 
         return restoredText;
     }

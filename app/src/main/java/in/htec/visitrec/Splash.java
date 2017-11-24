@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
@@ -50,6 +51,7 @@ public class Splash extends AppCompatActivity {
 
         path=getIntent().getStringExtra("img");
         utl.l(path);
+        field3=(Spinner)findViewById(R.id.field3);
 
         rq=new Request();
        final ImageView imageView=(ImageView)findViewById(R.id.img);
@@ -153,7 +155,7 @@ public class Splash extends AppCompatActivity {
     {
 
 
-        Constants.HOST=utl.getKey("ip",ctx);
+        Constants.HOST=utl.getKey("ipaddr",ctx);
         if(Constants.HOST!=null)
         {
             AndroidNetworking.initialize(ctx);
@@ -239,10 +241,12 @@ public class Splash extends AppCompatActivity {
                 @Override
                 public void onDone(String text) {
 
-                    utl.setKey("ip","http://"+text,ctx);
+                    utl.setKey("ipaddr","http://"+text,ctx);
+                    getData();
 
                 }
             });
+
 
         }
 
@@ -253,7 +257,7 @@ public class Splash extends AppCompatActivity {
 
     public void send()
     {
-        TextView email=(TextView)findViewById(R.id.email);
+        TextView email=(TextView)findViewById(R.id.field0);
         RadioButton field2=(RadioButton)findViewById(R.id.field2);
         Spinner field3=(Spinner)findViewById(R.id.field3);
         TextView field4=(TextView)findViewById(R.id.field4);
@@ -280,31 +284,42 @@ public class Splash extends AppCompatActivity {
         String sub="Visitor Details";
 
 
-        Constants.HOST=utl.getKey("ip",ctx);
+        Constants.HOST=utl.getKey("ipaddr",ctx);
         if(Constants.HOST!=null)
         {
             AndroidNetworking.initialize(ctx);
-            String url=Constants.HOST+"/mail.php?recipient="+rq.field0+"&subject="+ URLEncoder.encode("New Visitor")
-                    +"&body="+ URLEncoder.encode(body)
+            String url=Constants.HOST+Constants.API_ADD_VISIT
                     ;
+
+
+
+            ANRequest.MultiPartBuilder mp=new ANRequest.MultiPartBuilder(url);
+            mp.addMultipartFile("file",new File(path));
+            mp.addMultipartParameter("house_id",rq.house.id);
+            mp.addMultipartParameter("field0",rq.field0);
+            mp.addMultipartParameter("field1",rq.field1);
+            mp.addMultipartParameter("field2",rq.field2);
+            mp.addMultipartParameter("field3",rq.field3);
+            mp.addMultipartParameter("field4",rq.field4);
+            mp.addMultipartParameter("field5",rq.field5);
+
 
             utl.l(url);
             utl.showDig(true,ctx);
-            ;                AndroidNetworking.get(url).build().getAsString(new StringRequestListener() {
-            @Override
-            public void onResponse(String response) {
-                utl.showDig(false,ctx);
 
-                utl.diag(act,"DONE",response);
-            }
+            mp.build().getAsString(new StringRequestListener() {
+                @Override
+                public void onResponse(String response) {
+                    utl.showDig(false,ctx);
 
-            @Override
-            public void onError(ANError ANError) {                        utl.showDig(false,ctx);
+                }
 
-                utl.diag(act,"ERROR : " ,ANError.getErrorBody());
+                @Override
+                public void onError(ANError ANError) {
+                    utl.showDig(false,ctx);
 
-            }
-        });
+                }
+            });
 
 
         }
@@ -314,7 +329,7 @@ public class Splash extends AppCompatActivity {
                 @Override
                 public void onDone(String text) {
 
-                 utl.setKey("ip","http://"+text,ctx);
+                 utl.setKey("ipaddr","http://"+text,ctx);
 
                 }
             });
@@ -327,7 +342,7 @@ public class Splash extends AppCompatActivity {
     public void setUpUGS(final ArrayList<House> grps)
     {
 
-        ArrayList<House> hs=new ArrayList<>();
+        final ArrayList<House> hs=new ArrayList<>();
         for (House h:grps
              ) {
 
@@ -351,8 +366,8 @@ public class Splash extends AppCompatActivity {
 
 
 
-                        rq.house=houses.get(position);
-                        setTitle("To: "+houses.get(position).owner);
+                        rq.house=hs.get(position);
+                        setTitle("To: "+hs.get(position).owner);
 
 
 
@@ -409,7 +424,6 @@ public class Splash extends AppCompatActivity {
     {
 
 
-          field3=(Spinner)findViewById(R.id.field3);
 
 
         SimpleSpinAdapter adap=new SimpleSpinAdapter(ctx,android.R.layout.simple_spinner_item, grps );
