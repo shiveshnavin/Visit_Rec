@@ -19,6 +19,8 @@ import com.wang.avi.AVLoadingIndicatorView;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import in.htec.visitrec.adapters.GRecyclerAdapter;
 import in.htec.visitrec.database.Visit;
@@ -51,7 +53,35 @@ public class Home extends AppCompatActivity {
         dt=new DateTimePicker(act, DateTimePicker.DATE_TIME, new DateTimePicker.DateTimeCallback() {
             @Override
             public void picked(String dateTime) {
-                utl.snack(act,dateTime);
+
+
+
+                getVisitByDate(dateTime,dummies);
+
+            }
+        });
+
+
+
+        FloatingActionButton date = (FloatingActionButton) findViewById(R.id.date);
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dt.pick(false);
+
+            }
+        });
+
+
+
+        FloatingActionButton recent = (FloatingActionButton) findViewById(R.id.recent);
+        recent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                setUpList(dummies);
             }
         });
 
@@ -129,6 +159,15 @@ public class Home extends AppCompatActivity {
     public void setUpList(ArrayList<GRecyclerAdapter.Dummy> dummies)
     {
 
+        if(dummies.size()<1)
+        {
+
+        load(EMPTY);
+
+        }
+        else {
+            load(LOADED);
+        }
 
         GRecyclerAdapter adapter=new GRecyclerAdapter(ctx,dummies);
         rec.setLayoutManager(new LinearLayoutManager(act));
@@ -187,6 +226,29 @@ public class Home extends AppCompatActivity {
 
     }
 
+    public void getVisitByDate(String date,ArrayList<GRecyclerAdapter.Dummy> list)
+    {
+
+        Date d=new Date(date);
+        ArrayList<GRecyclerAdapter.Dummy> n=new ArrayList<>();
+
+        for (GRecyclerAdapter.Dummy l:list) {
+
+            Date d2=new Date(l.dateTime);
+            if(d.getDate()==d2.getDate()&&d.getDay()==d2.getDay()&&d.getYear()==d2.getYear())
+            {
+                n.add(l);
+            }
+
+            setUpList(n);
+
+
+
+        }
+
+
+
+    }
 
 
 
