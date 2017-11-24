@@ -80,11 +80,11 @@
             android:layout_height="wrap_content" />
 
 
-        <RadioButton
+        <CheckBox
             android:maxLines="1"
             android:layout_margin="10dp"
             android:id="@+id/field2"
-            android:hint="Personal Visit"
+            android:hint="Work Visit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

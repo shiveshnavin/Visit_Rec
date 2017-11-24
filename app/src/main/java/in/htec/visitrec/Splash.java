@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -18,6 +19,8 @@ import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
+
+import org.json.JSONArray;
 
 import java.io.File;
 import java.net.URLEncoder;
@@ -84,7 +87,8 @@ public class Splash extends AppCompatActivity {
 
         wing=(Spinner)findViewById(R.id.wing);
 
-        RadioButton work_visit=(RadioButton)findViewById(R.id.field2);
+        CheckBox work_visit=(CheckBox)findViewById(R.id.field2);
+
 
         work_visit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -103,6 +107,7 @@ public class Splash extends AppCompatActivity {
             }
         });
 
+        work_visit.setChecked(true);
 
         Uri ur=Uri.fromFile(new File(path));
 
@@ -172,7 +177,27 @@ public class Splash extends AppCompatActivity {
 
                 purposes=new ArrayList<String>();
 
-                purposes=utl.js.fromJson(response,purposes.getClass());
+              //  purposes=utl.js.fromJson(response,purposes.getClass());
+
+                try{
+
+                    JSONArray jar=new JSONArray(response);
+
+                    for (int i=0;i<jar.length();i++)
+                    {
+                        String h=jar.getJSONObject(i).getString("purpose");
+                        purposes.add(h);
+                    }
+
+
+
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+
+
                 setUpPurposes(purposes);
 
 
@@ -199,7 +224,25 @@ public class Splash extends AppCompatActivity {
 
                     houses=new ArrayList<House>();
 
-                    houses=utl.js.fromJson(response,houses.getClass());
+                  //  houses=utl.js.fromJson(response,houses.getClass());
+
+                    try{
+
+                        JSONArray jar=new JSONArray(response);
+
+                        for (int i=0;i<jar.length();i++)
+                        {
+                            House h=utl.js.fromJson(jar.get(i).toString(),House.class);
+                            houses.add(h);
+                        }
+
+
+
+                    }catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
                     wing.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -237,7 +280,7 @@ public class Splash extends AppCompatActivity {
         }
         else{
 
-            utl.inputDialog(ctx, "Enter IP", "Eg. 192.168.43.1", utl.TYPE_PHONE, new utl.InputDialogCallback() {
+            utl.inputDialog(ctx, "Enter IP", "Eg. 192.168.43.1", utl.TYPE_DEF, new utl.InputDialogCallback() {
                 @Override
                 public void onDone(String text) {
 
@@ -257,13 +300,16 @@ public class Splash extends AppCompatActivity {
 
     public void send()
     {
+        TextView field1=(TextView)findViewById(R.id.field1);
+
+
         TextView email=(TextView)findViewById(R.id.field0);
-        RadioButton field2=(RadioButton)findViewById(R.id.field2);
-        Spinner field3=(Spinner)findViewById(R.id.field3);
+//        RadioButton field2=(RadioButton)findViewById(R.id.field2);
+        //Spinner field3=(Spinner)findViewById(R.id.field3);
         TextView field4=(TextView)findViewById(R.id.field4);
         TextView field5=(TextView)findViewById(R.id.field5);
 
-        rq.field2=field2.getText().toString();
+        rq.field1=field1.getText().toString();
 
 
 
@@ -275,11 +321,13 @@ public class Splash extends AppCompatActivity {
 
       final  String body="Visitor Details :- \n"+
                 "House : "+rq.house.no+"\n"+
-                "Field 1 : "+rq.field0+"\n"+
+                "Field 0 : "+rq.field0+"\n"+
+              "Field 1 : "+rq.field1+"\n"+
                 "Field 2 : "+rq.field2+"\n"+
                 "Field 3 : "+rq.field3+"\n"+
                 "Field 4 : "+rq.field4+"\n"+
                 "Field 5 : "+rq.field5+"\n";
+        utl.l(body);
 
         String sub="Visitor Details";
 
@@ -295,14 +343,17 @@ public class Splash extends AppCompatActivity {
 
             ANRequest.MultiPartBuilder mp=new ANRequest.MultiPartBuilder(url);
             mp.addMultipartFile("file",new File(path));
-            mp.addMultipartParameter("house_id",rq.house.id);
-            mp.addMultipartParameter("field0",rq.field0);
-            mp.addMultipartParameter("field1",rq.field1);
-            mp.addMultipartParameter("field2",rq.field2);
-            mp.addMultipartParameter("field3",rq.field3);
-            mp.addMultipartParameter("field4",rq.field4);
-            mp.addMultipartParameter("field5",rq.field5);
+            mp.addMultipartParameter("house_id",""+rq.house.id);
+            mp.addMultipartParameter("field0",""+rq.field0);
+            mp.addMultipartParameter("field1",""+rq.field1);
+            mp.addMultipartParameter("field2",""+rq.field2);
+            mp.addMultipartParameter("field3",""+rq.field3);
+            mp.addMultipartParameter("field4",""+rq.field4);
+            mp.addMultipartParameter("field5",""+rq.field5);
+            mp.addMultipartParameter("mode","add");
 
+
+            utl.l(utl.js.toJson(rq));
 
             utl.l(url);
             utl.showDig(true,ctx);
@@ -311,6 +362,12 @@ public class Splash extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     utl.showDig(false,ctx);
+                    utl.l(response);
+
+                    if(response.contains("Successful"))
+                    {
+                        utl.diag(ctx,"Visit Registered !","Visit has been registered in Database Succesfully !");
+                    }
 
                 }
 
@@ -318,6 +375,7 @@ public class Splash extends AppCompatActivity {
                 public void onError(ANError ANError) {
                     utl.showDig(false,ctx);
 
+                    utl.l(ANError.getErrorDetail());
                 }
             });
 
@@ -325,7 +383,7 @@ public class Splash extends AppCompatActivity {
         }
         else{
 
-            utl.inputDialog(ctx, "Enter IP", "Eg. 192.168.43.1", utl.TYPE_PHONE, new utl.InputDialogCallback() {
+            utl.inputDialog(ctx, "Enter IP", "Eg. 192.168.43.1", utl.TYPE_DEF, new utl.InputDialogCallback() {
                 @Override
                 public void onDone(String text) {
 
@@ -343,7 +401,17 @@ public class Splash extends AppCompatActivity {
     {
 
         final ArrayList<House> hs=new ArrayList<>();
-        for (House h:grps
+
+        for(int i=0;i<grps.size();i++)
+        {
+            House h=grps.get(i);
+            if(h.no.contains(sel_wing))
+            {
+                hs.add(h);
+            }
+
+        }
+      /*  for (House h:grps
              ) {
 
             if(h.no.contains(sel_wing))
@@ -351,7 +419,7 @@ public class Splash extends AppCompatActivity {
                 hs.add(h);
             }
 
-        }
+        }*/
         HousesSpinAdapter adap=new HousesSpinAdapter(ctx,android.R.layout.simple_spinner_item, hs );
         adap.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 

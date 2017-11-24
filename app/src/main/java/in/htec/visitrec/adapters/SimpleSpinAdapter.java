@@ -54,7 +54,7 @@ public class SimpleSpinAdapter extends ArrayAdapter<String> {
         label.setGravity(Gravity.CENTER);
         // Then you can get the current item using the values array (Groups array) and the current position
         // You can NOW reference each method you has created in your bean object (Group class)
-        label.setText(values.get(position)+" - "+values.get(position));
+        label.setText(values.get(position) );
 
         LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,100);
         p.setMargins(0,2,0,2);
@@ -75,7 +75,7 @@ public class SimpleSpinAdapter extends ArrayAdapter<String> {
         TextView label = new TextView(context);
         label.setTextColor(Color.BLACK);
         label.setGravity(Gravity.CENTER);
-        label.setText(values.get(position)+" - "+values.get(position));
+        label.setText(values.get(position) );
 
         LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,100);
         p.setMargins(0,2,0,2);

@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -103,6 +105,17 @@ public class Home extends AppCompatActivity {
             }
         });
 
+
+
+
+    }
+
+
+    @Override
+    protected void onPostResume() {
+
+        super.onPostResume();
+
         String url=Constants.HOST+Constants.API_GET_VISITS;
         utl.l(url);
 
@@ -155,11 +168,7 @@ public class Home extends AppCompatActivity {
 
 
 
-
-
     }
-
-
 
     public void setUpList(final ArrayList<GRecyclerAdapter.Dummy> dummies)
     {
@@ -274,7 +283,23 @@ public class Home extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
+        if(item.getItemId()==R.id.reset)
+        {
+            utl.setKey("ipaddr",null,ctx);
+            utl.snack(act,"App Reset Complete !");
 
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.home,menu);
+
+        return true;
+    }
 }
