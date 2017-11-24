@@ -17,7 +17,9 @@ public class Constants {
 
     //@ID (ID of house)
     public static String API_GET_VISITS="/api/get_tours.php";
-    public static String API_USER_LOGIN_GET="/login.php";
+    public static String API_GET_PURPOSES="/api/get_purposes.php";
+    public static String API_GET_HOUSES="/api/get_places.php";
+    public static String API_USER_LOGIN_GET="/login_house.php";
 
 
 

@@ -2,6 +2,7 @@ package in.htec.visitrec;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,8 @@ import org.json.JSONArray;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import in.htec.visitrec.adapters.GRecyclerAdapter;
@@ -93,7 +96,9 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                dt.pick(false);
+
+                startActivity(new Intent(ctx,Click.class));
+
 
             }
         });
@@ -114,9 +119,8 @@ public class Home extends AppCompatActivity {
 
 
                         GRecyclerAdapter.Dummy vt=utl.js.fromJson(response.get(i).toString(), GRecyclerAdapter.Dummy.class);
-
-
                         dummies.add(vt);
+
 
                     }
 
@@ -157,7 +161,7 @@ public class Home extends AppCompatActivity {
 
 
 
-    public void setUpList(ArrayList<GRecyclerAdapter.Dummy> dummies)
+    public void setUpList(final ArrayList<GRecyclerAdapter.Dummy> dummies)
     {
 
         if(dummies.size()<1)
@@ -169,6 +173,23 @@ public class Home extends AppCompatActivity {
         else {
             load(LOADED);
         }
+
+
+
+
+
+        Collections.sort(dummies, new Comparator<GRecyclerAdapter.Dummy>() {
+            @Override
+            public int compare(GRecyclerAdapter.Dummy dm, GRecyclerAdapter.Dummy t1) {
+
+                return dm.dateTime.compareTo(t1.dateTime);
+
+            }
+        });
+
+        Collections.reverse(dummies);
+
+
 
         GRecyclerAdapter adapter=new GRecyclerAdapter(ctx,dummies);
         rec.setLayoutManager(new LinearLayoutManager(act));

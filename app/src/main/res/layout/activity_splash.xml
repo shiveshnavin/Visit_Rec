@@ -24,13 +24,6 @@
 
 
 
-        <Spinner
-            android:background="@drawable/rounded_black_hollow"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/houseno" />
-
-
         <com.daniribalbert.customfontlib.views.CustomFontTextView
             android:layout_width="match_parent"
             android:visibility="gone"
@@ -42,37 +35,74 @@
         <com.daniribalbert.customfontlib.views.CustomFontEditText
             android:maxLines="1"
             android:layout_margin="10dp"
-            android:id="@+id/email"
-            android:hint="EMAIL"
+            android:id="@+id/field0"
+            android:hint="Name"
             app:font="Avenir-Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <Spinner
+                android:background="@drawable/rounded_black_hollow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/wing" />
+
+
+
+            <Spinner
+                android:background="@drawable/rounded_black_hollow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/houseno" />
+
+
+
+
+
+        </LinearLayout>
+
+
         <com.daniribalbert.customfontlib.views.CustomFontEditText
+            android:maxLines="1"
+            android:layout_margin="10dp"
+            android:id="@+id/field1"
+            android:hint="Phone No."
+            android:inputType="number"
+            app:font="Avenir-Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <RadioButton
             android:maxLines="1"
             android:layout_margin="10dp"
             android:id="@+id/field2"
-            android:hint="Field 2"
-            app:font="Avenir-Medium"
+            android:hint="Personal Visit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
 
 
-        <com.daniribalbert.customfontlib.views.CustomFontEditText
-            android:maxLines="1"
-            android:layout_margin="10dp"
-            android:id="@+id/field3"
-            android:hint="Field 3"
-            app:font="Avenir-Medium"
+        <!-- purpose plumber/cook-->
+        <Spinner
+            android:background="@drawable/rounded_black_hollow"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:id="@+id/field3" />
+
+
 
 
 
         <com.daniribalbert.customfontlib.views.CustomFontEditText
-            android:maxLines="1"
+            android:maxLines="5"
             android:layout_margin="10dp"
             android:id="@+id/field4"
             android:hint="Field 4"
@@ -83,7 +113,7 @@
 
 
         <com.daniribalbert.customfontlib.views.CustomFontEditText
-            android:maxLines="1"
+            android:maxLines="2"
             android:layout_margin="10dp"
             android:id="@+id/field5"
             android:hint="Field 5"

@@ -19,15 +19,15 @@ import in.htec.visitrec.database.House;
  * Created by shivesh on 29/6/17.
  */
 
-public class SpinAdapter extends ArrayAdapter<House> {
+public class HousesSpinAdapter extends ArrayAdapter<House> {
 
     // Your sent context
     private Context context;
     // Your custom values for the spinner (Group)
     private ArrayList<House> values;
 
-    public SpinAdapter(Context context, int textViewResourceId,
-                       ArrayList<House> values) {
+    public HousesSpinAdapter(Context context, int textViewResourceId,
+                             ArrayList<House> values) {
         super(context, textViewResourceId, values);
         this.context = context;
         this.values = values;
