@@ -125,6 +125,7 @@ public class Home extends AppCompatActivity {
             public void onResponse(JSONArray response) {
                 dummies=new ArrayList<>();
 
+                fac=false;
                 try{
 
                     for(int i=0;i<response.length();i++)
@@ -170,13 +171,20 @@ public class Home extends AppCompatActivity {
 
     }
 
-    public void setUpList(final ArrayList<GRecyclerAdapter.Dummy> dummies)
+    boolean fac=false;
+    public void setUpList(final ArrayList<GRecyclerAdapter.Dummy> dumm)
     {
 
-        if(dummies.size()<1)
+        utl.l(dumm.size());
+        if(dumm.size()==0)
         {
 
-        load(EMPTY);
+            utl.l("EMPTY");
+             load(EMPTY);
+
+       utl.snack(act,"No Records !");
+
+
 
         }
         else {
@@ -187,7 +195,7 @@ public class Home extends AppCompatActivity {
 
 
 
-        Collections.sort(dummies, new Comparator<GRecyclerAdapter.Dummy>() {
+        Collections.sort(dumm, new Comparator<GRecyclerAdapter.Dummy>() {
             @Override
             public int compare(GRecyclerAdapter.Dummy dm, GRecyclerAdapter.Dummy t1) {
 
@@ -196,11 +204,11 @@ public class Home extends AppCompatActivity {
             }
         });
 
-        Collections.reverse(dummies);
+        Collections.reverse(dumm);
 
 
 
-        GRecyclerAdapter adapter=new GRecyclerAdapter(ctx,dummies);
+        GRecyclerAdapter adapter=new GRecyclerAdapter(ctx,dumm);
         rec.setLayoutManager(new LinearLayoutManager(act));
         rec.setAdapter(adapter);
 

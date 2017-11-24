@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -81,15 +82,49 @@ public class Click extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    String file=Constants.getFolder()+"/"+ SystemClock.uptimeMillis()+"bmp.jpg";
+                    final String file=Constants.getFolder()+"/"+ SystemClock.uptimeMillis()+"bmp.jpg";
                     fotoapparat
+
                             .takePicture()
                             .saveToFile(new File(file));
                    // utl.snack(act,"SAVED !");
 
-                    Intent it=new Intent(ctx,Splash.class);
-                    it.putExtra("img",file);
-                    startActivity(it);
+//                    Bitmap bb=utl.convertBitmap(ctx,file,30);
+
+                    utl.showDig(true,ctx);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            Bitmap bb=BitmapFactory.decodeFile(file);
+                            String filename=Constants.getFolder()+"/"+ SystemClock.uptimeMillis()+"bmp_c.jpg";
+                            FileOutputStream out = null;
+                            try {
+                                out = new FileOutputStream(filename);
+                                bb.compress(Bitmap.CompressFormat.JPEG, 20, out); // bmp is your Bitmap instance
+                                // PNG is a lossless format, the compression factor (100) is ignored
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            } finally {
+                                try {
+                                    if (out != null) {
+                                        out.close();
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            utl.showDig(false,ctx);
+
+                            utl.l("Bitmap Size : "+(new File(filename).length()));
+                            Intent it=new Intent(ctx,Splash.class);
+                            it.putExtra("img",filename);
+                            startActivity(it);
+
+                        }
+                    },1500);
+
 
 
 

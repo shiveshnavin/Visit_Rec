@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -39,7 +40,19 @@ public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.Cust
         final Dummy item=feedItemList.get(i);
 
         customViewHolder.textView.setText(Html.fromHtml(item.getData(i)));
-        Picasso.with(mContext).load(item.image).placeholder(R.drawable.ic_camera_white_36dp).into(customViewHolder.img);
+
+        customViewHolder.img.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Glide.with(mContext).load(item.image).placeholder(R.drawable.ic_camera_white_36dp).centerCrop().into(customViewHolder.img);
+
+            }
+        },400);
+
+
+
+
+       // Picasso.with(mContext).load(item.image).placeholder(R.drawable.ic_camera_white_36dp).into(customViewHolder.img);
     }
 
     @Override

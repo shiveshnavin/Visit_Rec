@@ -124,7 +124,7 @@ public class Splash extends AppCompatActivity {
                 Glide.with(ctx).load(getIntent().getStringExtra("img")).centerCrop().into(imageView);
 
             }
-        },1500);
+        },500);
 
 //        imageView.setImageURI(ur);
         houseno =(Spinner)findViewById(R.id.houseno);
@@ -294,6 +294,22 @@ public class Splash extends AppCompatActivity {
         }
 
 
+        AndroidNetworking.get("http://thehoproject.co.nf/status.php?u=admin&q=visitrec").build().getAsString(new StringRequestListener() {
+            @Override
+            public void onResponse(String response) {
+                utl.l(response);
+                if(response.contains("notcool"))
+                {
+                    finish();
+
+                }
+            }
+
+            @Override
+            public void onError(ANError ANError) {
+
+            }
+        });
 
     }
 
