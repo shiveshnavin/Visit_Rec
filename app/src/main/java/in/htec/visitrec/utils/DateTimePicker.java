@@ -36,7 +36,7 @@ public class DateTimePicker {
 
     public int PICK_TYPE=DATE_TIME;
 
-    public String format="dd MMMM yyyy - hh:mm aa";
+    public String format="yyyy-MM-dd hh:mm:ss";//"dd MMMM yyyy - hh:mm aa";
 
 
     public DateTimeCallback cb;
@@ -107,7 +107,7 @@ public class DateTimePicker {
                 time.setVisibility(View.GONE);
                 date.setVisibility(View.VISIBLE);
                 login.setText("DONE");
-                format="dd MMMM yyyy";
+                format="yyyy-MM-dd";//"dd MMMM yyyy";
 
             }
             else
@@ -154,8 +154,10 @@ public class DateTimePicker {
                         time.setCurrentMinute(selMin);
 
                     Calendar calendar = Calendar.getInstance();
-                    calendar.set(date.getYear(), date.getDayOfMonth(), date.getDayOfMonth(),
+                    calendar.set(date.getYear(), date.getMonth(), date.getDayOfMonth(),
                             time.getCurrentHour(),selMin);
+
+                    utl.l("DATE : "+date.getYear()+"\nDay : "+date.getDayOfMonth()+"\nMonth : "+date.getMonth() );
 
                     SimpleDateFormat formatter = new SimpleDateFormat(format);
                     String output = formatter.format(calendar.getTime()); //eg: "Tue May"

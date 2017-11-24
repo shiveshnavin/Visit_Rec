@@ -18,6 +18,7 @@ import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,13 +51,13 @@ public class Home extends AppCompatActivity {
 
 
 
-        dt=new DateTimePicker(act, DateTimePicker.DATE_TIME, new DateTimePicker.DateTimeCallback() {
+        dt=new DateTimePicker(act, DateTimePicker.DATE_ONLY, new DateTimePicker.DateTimeCallback() {
             @Override
-            public void picked(String dateTime) {
+            public void picked(String dateTim) {
 
 
 
-                getVisitByDate(dateTime,dummies);
+                getVisitByDate(dateTim,dummies);
 
             }
         });
@@ -226,20 +227,22 @@ public class Home extends AppCompatActivity {
 
     }
 
+
+
     public void getVisitByDate(String date,ArrayList<GRecyclerAdapter.Dummy> list)
     {
+        //24 January 2019 - 01:30 PM
 
-        Date d=new Date(date);
         ArrayList<GRecyclerAdapter.Dummy> n=new ArrayList<>();
 
         for (GRecyclerAdapter.Dummy l:list) {
 
-            Date d2=new Date(l.dateTime);
-            if(d.getDate()==d2.getDate()&&d.getDay()==d2.getDay()&&d.getYear()==d2.getYear())
+
+
+            if(l.dateTime.contains(date))
             {
                 n.add(l);
             }
-
             setUpList(n);
 
 
