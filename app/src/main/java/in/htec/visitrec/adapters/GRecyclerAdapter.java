@@ -18,6 +18,7 @@ import java.util.List;
 import in.htec.visitrec.ImageViewer;
 import in.htec.visitrec.R;
 import in.htec.visitrec.database.Visit;
+import in.htec.visitrec.utl;
 
 public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.CustomViewHolder> {
     private List<Dummy> feedItemList;
@@ -46,12 +47,17 @@ public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.Cust
         customViewHolder.img.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Glide.with(mContext).load(item.image).placeholder(R.drawable.ic_camera_white_36dp).centerCrop().into(customViewHolder.img);
+                try {
+                    Glide.with(mContext).load(item.image).placeholder(R.drawable.ic_camera_white_36dp).centerCrop().into(customViewHolder.img);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
         },400);
 
-        customViewHolder.img.setOnClickListener(new View.OnClickListener() {
+        utl.l("Image Is :" +item.image);
+        customViewHolder.base.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent it=new Intent(mContext, ImageViewer.class);

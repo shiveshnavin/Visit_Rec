@@ -45,20 +45,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-
-
-        <com.daniribalbert.customfontlib.views.CustomFontTextView
-            android:layout_width="wrap_content"
-            android:background="@drawable/rounded_orange_hollow"
-            android:textSize="23sp"
-            android:layout_gravity="center"
+        <LinearLayout
             android:gravity="center"
-            android:padding="10dp"
-            android:textColor="@color/white"
-            android:layout_height="wrap_content"
-            android:text="LOGIN"
-            app:font="Avenir-Medium"
-            android:id="@+id/login" />
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.daniribalbert.customfontlib.views.CustomFontTextView
+                android:layout_width="wrap_content"
+                 android:textSize="23sp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="10dp"
+                 android:layout_height="wrap_content"
+                android:text="LOGIN"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                app:font="Avenir-Medium"
+                android:id="@+id/login" />
+
+
+
+            <com.daniribalbert.customfontlib.views.CustomFontTextView
+                android:layout_width="wrap_content"
+                 android:textSize="23sp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:padding="10dp"
+                android:text="RESET IP"
+                android:textColor="@color/red_700"
+                android:layout_height="wrap_content"
+                 app:font="Avenir-Medium"
+                android:id="@+id/reset" />
+
+
+
+        </LinearLayout>
+
 
 
 

@@ -2,6 +2,7 @@ package in.htec.visitrec;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -61,7 +62,13 @@ public class Splash extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                utl.snack(view, "Change Image ?", "CHANGE", new GenricCallback() {
+
+                Context mContext=ctx;
+                Intent it=new Intent(mContext, ImageViewer.class);
+                it.putExtra("img",path);
+                mContext.startActivity(it);
+
+               /* utl.snack(view, "Change Image ?", "CHANGE", new GenricCallback() {
                     @Override
                     public void onStart() {
                         finish();
@@ -81,7 +88,7 @@ public class Splash extends AppCompatActivity {
                     public void onDone(Object obj) {
 
                     }
-                });
+                });*/
             }
         });
 

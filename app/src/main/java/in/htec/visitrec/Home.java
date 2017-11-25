@@ -31,6 +31,7 @@ import java.util.Date;
 import in.htec.visitrec.adapters.GRecyclerAdapter;
 import in.htec.visitrec.database.Visit;
 import in.htec.visitrec.utils.DateTimePicker;
+import in.htec.visitrec.utils.GenricCallback;
 
 public class Home extends AppCompatActivity {
 
@@ -87,7 +88,8 @@ public class Home extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                setUpList(dummies);
+                onPostResume();
+               // setUpList(dummies);
             }
         });
 
@@ -296,8 +298,34 @@ public class Home extends AppCompatActivity {
 
         if(item.getItemId()==R.id.reset)
         {
-            utl.setKey("ipaddr",null,ctx);
-            utl.snack(act,"App Reset Complete !");
+           utl.snack(act, "Reset IP and Logout ?", "RESET", new GenricCallback() {
+                @Override
+                public void onStart() {
+
+                    utl.setKey("ipaddr",null,ctx);
+                    utl.setKey("loggein",null,ctx);
+
+                    startActivity(new Intent(ctx,Login.class));
+                    finish();
+
+                }
+
+                @Override
+                public void onDo(Object obj) {
+
+                }
+
+                @Override
+                public void onDo(Object obj, Object obj2) {
+
+                }
+
+                @Override
+                public void onDone(Object obj) {
+
+                }
+            });
+
 
         }
         return super.onOptionsItemSelected(item);

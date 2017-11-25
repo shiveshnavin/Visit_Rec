@@ -39,9 +39,33 @@ public class Login extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
         getData();
+        wing=(Spinner)findViewById(R.id.wing);
+
+        houseno =(Spinner)findViewById(R.id.houseno);
+
+        if(utl.getKey("loggein",ctx)!=null)
+        {
+            startActivity(new Intent(ctx,Home.class));
+            finish();
+        }
+
+        findViewById(R.id.reset).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
 
-        final EditText ec=(EditText)findViewById(R.id.passwd);
+                utl.setKey("loggein",null,ctx);
+                utl.setKey("ipaddr",null,ctx);
+
+                getData();
+
+
+
+
+            }});
+
+
+                final EditText ec=(EditText)findViewById(R.id.passwd);
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,6 +73,7 @@ public class Login extends AppCompatActivity {
 
                 String url=Constants.HOST+Constants.API_USER_LOGIN_GET+"?house_id="+house_id+"&passwd="+ URLEncoder.encode(ec.getText().toString());
 
+                utl.l(url);
                 utl.showDig(true,ctx);
                 AndroidNetworking.get(url).build().getAsString(new StringRequestListener() {
                     @Override
@@ -59,7 +84,10 @@ public class Login extends AppCompatActivity {
                         utl.showDig(false,ctx);
                         if(!response.contains("error"))
                         {
+
+                            utl.setKey("loggein","1",ctx);
                             startActivity(new Intent(ctx,Home.class));
+                            finish();
                         }
                         else
                         {
@@ -213,8 +241,6 @@ public class Login extends AppCompatActivity {
 
 
 
-    Request rq;
-
     String path;
     ArrayList<House> houses;
     public void setUpUGS(final ArrayList<House> grps)
@@ -254,8 +280,8 @@ public class Login extends AppCompatActivity {
 
 
 
-                rq.house=hs.get(position);
-                setTitle("To: "+hs.get(position).owner);
+//                rq.house=hs.get(position);
+                setTitle("Login As : "+hs.get(position).owner);
                 house_id=hs.get(position).id;
 
 
