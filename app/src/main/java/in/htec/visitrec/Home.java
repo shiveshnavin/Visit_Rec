@@ -139,7 +139,10 @@ public class Home extends AppCompatActivity {
 
         String url=Constants.HOST+Constants.API_GET_VISITS;
         utl.l(url);
-
+        if(!utl.isAdmin)
+        {
+            url=url+"?id="+utl.getKey("house_id",ctx);
+        }
         load(LOADING);
         AndroidNetworking.get(url).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
@@ -203,7 +206,7 @@ public class Home extends AppCompatActivity {
             utl.l("EMPTY");
              load(EMPTY);
 
-       utl.snack(act,"No Records !");
+      // utl.snack(act,"No Records !");
 
 
 
