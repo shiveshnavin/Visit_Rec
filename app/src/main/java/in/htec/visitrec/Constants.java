@@ -21,7 +21,7 @@ public class Constants {
     public static String API_GET_HOUSES="/api/get_places.php";
     public static String API_ADD_VISIT="/api/add_tour.php";
     public static String API_USER_LOGIN_GET="/api/login_house.php";
-    public static String API_GET_NOTIFICATIONS="/api/login_house.php";
+    public static String API_GET_NOTIFICATIONS="/api/get_notifications.php";
 
 
 

@@ -107,9 +107,11 @@ public class Home extends AppCompatActivity {
             }
         });
 
-
-        startService(new Intent(ctx,VisitCheck.class));
-
+        if(!utl.isMyServiceRunning(VisitCheck.class,ctx))
+                startService(new Intent(ctx,VisitCheck.class));
+        else {
+            utl.l("VISITCHECK ALREADY STARTED ");
+        }
 
     }
 

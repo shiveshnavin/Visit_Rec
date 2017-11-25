@@ -17,6 +17,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.BitmapRequestListener;
 
+import in.htec.visitrec.database.NotificationData;
 import in.htec.visitrec.database.Visit;
 
 /**
@@ -49,14 +50,14 @@ public class VisitNotification {
      */
 
     public static void notify(final Context context,
-                              final Visit visit, final int number) {
+                              final NotificationData visit, final int number) {
         final Resources res = context.getResources();
 
         // This image is used as the notification's large icon (thumbnail) when
         // the notification is collapsed, and as the big picture to show when
         // the notification is expanded.
 
-        final String exampleString=visit.field0;
+        final String exampleString= "New Visitor : "+visit.field0;
 
         AndroidNetworking.get(visit.image).build().getAsBitmap(new BitmapRequestListener() {
             @Override
@@ -67,11 +68,10 @@ public class VisitNotification {
                 final Bitmap picture = response;//BitmapFactory.decodeResource(res, R.drawable.example_picture);
 
 
-                final String ticker = exampleString;
-                final String title = res.getString(
-                        R.string.visit_notification_title_template, exampleString);
-                final String text = res.getString(
-                        R.string.visit_notification_placeholder_text_template, exampleString);
+                final String ticker = "Visitor Notification !";
+                final String title = "New Visitor : "+visit.field0;
+                final String text = "New Visitor has been recorded for your house . "+visit.field0+" will be visiting your house for" +
+                        " "+visit.field3 +". The date and time of recorded visit is "+visit.dateTime;
 
                 final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 
@@ -160,14 +160,13 @@ public class VisitNotification {
 
 
 
-                final Bitmap picture =  BitmapFactory.decodeResource(res, R.drawable.example_picture);
+                final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.example_picture);
 
 
-                final String ticker = exampleString;
-                final String title = res.getString(
-                        R.string.visit_notification_title_template, exampleString);
-                final String text = res.getString(
-                        R.string.visit_notification_placeholder_text_template, exampleString);
+                final String ticker = "Visitor Notification !";
+                final String title = "New Visitor : "+visit.field0;
+                final String text = "New Visitor has been recorded for your house . "+visit.field0+" will be visiting your house for" +
+                        " "+visit.field3 +". The date and time of recorded visit is "+visit.dateTime;
 
                 final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 
@@ -246,8 +245,6 @@ public class VisitNotification {
                         .setAutoCancel(true);
 
                 VisitNotification.notify(context, builder.build());
-
-
 
 
 

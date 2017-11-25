@@ -11,6 +11,15 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+
+import in.htec.visitrec.adapters.GRecyclerAdapter;
+import in.htec.visitrec.database.NotificationData;
+import in.htec.visitrec.utils.NotificationExtras;
+
 public class VisitCheck extends Service {
     Context ctx;
     final Runnable rm=new Runnable() {
@@ -83,6 +92,42 @@ public class VisitCheck extends Service {
             @Override
             public void onResponse(String response) {
                 utl.l("VISITCHECK   "+response);
+                try {
+                    JSONArray jar=new JSONArray(response);
+
+
+                   ArrayList<NotificationData> dummies=new ArrayList<>();
+
+                     try{
+
+                        for(int i=0;i<response.length();i++)
+                        {
+
+
+                            NotificationData vt=utl.js.fromJson(jar.get(i).toString(), NotificationData.class);
+                            dummies.add(vt);
+
+                            VisitNotification.notify(ctx,vt,i*100);
+
+
+                        }
+
+
+                    }catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
+
+
+
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
 
             }
 
