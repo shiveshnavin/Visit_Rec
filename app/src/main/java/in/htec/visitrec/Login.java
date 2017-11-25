@@ -64,6 +64,11 @@ public class Login extends AppCompatActivity {
 
             }});
 
+        if(utl.isAdmin)
+        {
+            wing.setVisibility(View.GONE);
+            houseno.setVisibility(View.GONE);
+        }
 
                 final EditText ec=(EditText)findViewById(R.id.passwd);
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
@@ -71,8 +76,17 @@ public class Login extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                String url=Constants.HOST+Constants.API_USER_LOGIN_GET+"?house_id="+house_id+"&passwd="+ URLEncoder.encode(ec.getText().toString());
+                String url=Constants.HOST+Constants.API_ADMIN_LOGIN_GET+"?house_id="+house_id+"&passwd="+ URLEncoder.encode(ec.getText().toString());
 
+                if(utl.isAdmin)
+                {
+                    url=Constants.HOST+Constants.API_ADMIN_LOGIN_GET+"?house_id="+house_id+"&passwd="+ URLEncoder.encode(ec.getText().toString());
+
+                }
+                else {
+                    url=Constants.HOST+Constants.API_USER_LOGIN_GET+"?house_id="+house_id+"&passwd="+ URLEncoder.encode(ec.getText().toString());
+
+                }
                 utl.l(url);
                 utl.showDig(true,ctx);
                 AndroidNetworking.get(url).build().getAsString(new StringRequestListener() {
@@ -93,7 +107,7 @@ public class Login extends AppCompatActivity {
                         }
                         else
                         {
-                            utl.snack(act,"Login Unsuccesful !");
+                            utl.snack(act,"Login Unsuccesfull !");
                         }
 
 

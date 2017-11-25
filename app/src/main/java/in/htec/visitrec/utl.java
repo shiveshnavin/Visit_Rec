@@ -82,6 +82,7 @@ public class utl {
     public static Gson js=new Gson();
 
     public static Context ctx;
+    public static boolean isAdmin=true;
 
     /*********************************************************/
     public static void init(Context ctxx)
