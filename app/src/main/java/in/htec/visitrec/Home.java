@@ -108,6 +108,7 @@ public class Home extends AppCompatActivity {
         });
 
 
+        startService(new Intent(ctx,VisitCheck.class));
 
 
     }

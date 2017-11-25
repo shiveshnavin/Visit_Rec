@@ -86,6 +86,8 @@ public class Login extends AppCompatActivity {
                         {
 
                             utl.setKey("loggein","1",ctx);
+                            utl.setKey("house_id",house_id,ctx);
+
                             startActivity(new Intent(ctx,Home.class));
                             finish();
                         }
