@@ -1,6 +1,7 @@
 package in.htec.visitrec.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import in.htec.visitrec.ImageViewer;
 import in.htec.visitrec.R;
 import in.htec.visitrec.database.Visit;
 
@@ -49,6 +51,14 @@ public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.Cust
             }
         },400);
 
+        customViewHolder.img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it=new Intent(mContext, ImageViewer.class);
+                it.putExtra("img",item.image);
+                mContext.startActivity(it);
+            }
+        });
 
 
 

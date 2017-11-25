@@ -9,6 +9,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.squareup.picasso.Picasso;
 
 import in.htec.visitrec.utils.ZoomImageView;
@@ -40,9 +44,42 @@ public class ImageViewer extends AppCompatActivity {
 
 
 
-        ZoomImageView activity_image_view=(ZoomImageView)findViewById(R.id.activity_image_view);
+        utl.showDig(true,ImageViewer.this);
+        final ZoomImageView activity_image_view=(ZoomImageView)findViewById(R.id.activity_image_view);
         try {
-            Picasso.with(this).load(getIntent().getStringExtra("img")).placeholder(R.drawable.rounded_black_filled).into(activity_image_view);
+            //Picasso.with(this).load(getIntent().getStringExtra("img"))
+            Glide.with(this).load(getIntent().getStringExtra("img")).listener(new RequestListener<String, GlideDrawable>() {
+                @Override
+                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+
+                    Picasso.with(ImageViewer.this).load(R.drawable.rounded_black_filled).into(activity_image_view);
+
+                    utl.showDig(false,ImageViewer.this);
+
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+
+
+
+                    utl.showDig(false,ImageViewer.this);
+
+
+
+
+
+                    return false;
+                }
+            }).placeholder(R.drawable.rounded_black_filled).into(activity_image_view);
+
+
+
+
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
             Picasso.with(this).load(R.drawable.rounded_black_filled).into(activity_image_view);
