@@ -308,6 +308,7 @@ public class Home extends AppCompatActivity {
                     utl.setKey("ipaddr",null,ctx);
                     utl.setKey("loggein",null,ctx);
 
+                    stopService(new Intent(ctx,VisitCheck.class));
                     startActivity(new Intent(ctx,Login.class));
                     finish();
 

@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 
 import com.androidnetworking.AndroidNetworking;
@@ -354,9 +355,9 @@ public class VisitNotification {
         final NotificationManager nm = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
-            nm.notify(NOTIFICATION_TAG, 0, notification);
+            nm.notify(NOTIFICATION_TAG, (int)SystemClock.uptimeMillis(), notification);
         } else {
-            nm.notify(NOTIFICATION_TAG.hashCode(), notification);
+            nm.notify( (int)SystemClock.uptimeMillis(), notification);
         }
     }
 

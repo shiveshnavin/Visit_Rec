@@ -116,7 +116,7 @@ public class VisitCheck extends Service {
 
                     }catch (Exception e)
                     {
-                        e.printStackTrace();
+                        //e.printStackTrace();
                     }
 
 
