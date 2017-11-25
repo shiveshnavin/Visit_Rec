@@ -65,7 +65,7 @@ public class VisitNotification {
 
 
 
-                final Bitmap picture = response;//BitmapFactory.decodeResource(res, R.drawable.example_picture);
+                final Bitmap picture = Bitmap.createScaledBitmap(response,300,300,false);//BitmapFactory.decodeResource(res, R.drawable.example_picture);
 
 
                 final String ticker = "Visitor Notification !";
@@ -124,7 +124,7 @@ public class VisitNotification {
                         // later.
                         .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(picture)
                                 .setBigContentTitle(title)
-                                .setSummaryText("Dummy summary text"))
+                                .setSummaryText("New Visitor !"))
 
                         // Example additional actions for this notification. These will
                         // only show on devices running Android 4.1 or later, so you
@@ -139,12 +139,12 @@ public class VisitNotification {
                                         0,
                                         Intent.createChooser(new Intent(Intent.ACTION_SEND)
                                                 .setType("text/plain")
-                                                .putExtra(Intent.EXTRA_TEXT, "Dummy text"), "Dummy title"),
+                                                .putExtra(Intent.EXTRA_TEXT,visit.getData(0)), visit.field0),
                                         PendingIntent.FLAG_UPDATE_CURRENT))
-                        .addAction(
+                       /* .addAction(
                                 R.drawable.ic_action_stat_reply,
                                 res.getString(R.string.action_reply),
-                                null)
+                                null)*/
 
                         // Automatically dismiss the notification when it is touched.
                         .setAutoCancel(true);

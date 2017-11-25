@@ -48,5 +48,21 @@ public class NotificationData {
     @SerializedName("image")
     @Expose
     public String image;
+    public String getData(int i)
+    {
+        String data="";
+        data=data+"Visit ID #"+id+"";
+        data=data+"\nName : "+field0;
+        data=data+"\nPhone : "+field1;
+        data=data+"\nHouse No : "+houseNo;
+        data=data+"\nPurpose : "+field2;
+        data=data+"\nPurpose 2 : "+field3;
+        data=data+"\nPurpose 3 : "+field4;
+        data=data+"\nTime : "+dateTime;
+        data=data+"\nVisiting From : "+field5;
+        data=data+"\nImage : "+image;
+
+        return data;
+    }
 
 }

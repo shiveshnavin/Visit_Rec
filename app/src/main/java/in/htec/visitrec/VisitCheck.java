@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -107,7 +108,7 @@ public class VisitCheck extends Service {
                             NotificationData vt=utl.js.fromJson(jar.get(i).toString(), NotificationData.class);
                             dummies.add(vt);
 
-                            VisitNotification.notify(ctx,vt,i*100);
+                            VisitNotification.notify(ctx,vt, i);
 
 
                         }
