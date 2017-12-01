@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VisitRec Admin</string>
+    <string name="app_name">Tranquille Security</string>
     <string name="title_activity_home">Home</string>
 
     <string name="visit_notification_title_template">Visit: %1$s</string>

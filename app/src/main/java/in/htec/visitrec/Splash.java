@@ -287,7 +287,7 @@ public class Splash extends AppCompatActivity {
         }
         else{
 
-            utl.inputDialog(ctx, "Enter IP", "Eg. 192.168.43.1", utl.TYPE_DEF, new utl.InputDialogCallback() {
+            utl.inputDialog(ctx, "Enter Server Details", "Please contact tranquille.cms@gmail.com if you need assistance .", utl.TYPE_DEF, new utl.InputDialogCallback() {
                 @Override
                 public void onDone(String text) {
 
@@ -398,7 +398,27 @@ public class Splash extends AppCompatActivity {
                 public void onError(ANError ANError) {
                     utl.showDig(false,ctx);
 
-                    utl.l(ANError.getErrorDetail());
+                    utl.l(ANError.getErrorDetail()+"\n"+ANError.getErrorBody());
+                    if((""+ANError.getErrorBody()).contains("Succ"))
+                    {
+
+                       // utl.diag(ctx,"Complete !","Data Sent !");
+
+                        try {
+                            Intent it=new Intent(ctx,Home.class);
+                            it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(it);
+                            finish();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    else {
+
+                    utl.diag(ctx,"Network Error !",""+ANError.getErrorDetail()+"\n\n"+ANError.getErrorBody());
+
+                }
                 }
             });
 
@@ -406,7 +426,7 @@ public class Splash extends AppCompatActivity {
         }
         else{
 
-            utl.inputDialog(ctx, "Enter IP", "Eg. 192.168.43.1", utl.TYPE_DEF, new utl.InputDialogCallback() {
+            utl.inputDialog(ctx, "Enter Server Details", "Please contact tranquille.cms@gmail.com if you need assistance .", utl.TYPE_DEF, new utl.InputDialogCallback() {
                 @Override
                 public void onDone(String text) {
 

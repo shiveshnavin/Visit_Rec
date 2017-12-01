@@ -119,7 +119,7 @@ public class Login extends AppCompatActivity {
 
                         utl.showDig(false,ctx);
 
-                        utl.snack(act,"Network Error !");
+                        utl.snack(act,"Network Error !"+ANError.getErrorBody()+"\n"+ANError.getErrorDetail());
 
                     }
                 });
@@ -219,7 +219,7 @@ public class Login extends AppCompatActivity {
         }
         else{
 
-            utl.inputDialog(ctx, "Enter IP", "Eg. 192.168.43.1", utl.TYPE_DEF, new utl.InputDialogCallback() {
+            utl.inputDialog(ctx, "Enter Server Details", "Please contact tranquille.cms@gmail.com if you need assistance .", utl.TYPE_DEF, new utl.InputDialogCallback() {
                 @Override
                 public void onDone(String text) {
 
