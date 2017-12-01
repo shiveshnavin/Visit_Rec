@@ -105,10 +105,11 @@
             android:maxLines="5"
             android:layout_margin="10dp"
             android:id="@+id/field4"
-            android:hint="Field 4"
+            android:hint="Purpose "
             app:font="Avenir-Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
 
 
 
@@ -116,7 +117,7 @@
             android:maxLines="2"
             android:layout_margin="10dp"
             android:id="@+id/field5"
-            android:hint="Field 5"
+            android:hint="Visiting from"
             app:font="Avenir-Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
