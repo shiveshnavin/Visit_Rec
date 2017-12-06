@@ -21,6 +21,7 @@ import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -173,7 +174,33 @@ public class Home extends AppCompatActivity {
 
 
 
-                setUpList(dummies);
+
+
+                String dateTim="";
+
+                try {
+                    Calendar cal = Calendar.getInstance();
+                    Date currentLocalTime = cal.getTime();
+
+                    DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+
+                    dateTim = date.format(currentLocalTime);
+
+                    System.out.println(dateTim);
+
+
+
+                    getVisitByDate(dateTim,dummies);
+                } catch (Exception e) {
+
+                    setUpList(dummies);
+                    e.printStackTrace();
+                }
+
+                ////  setUpList(dummies);
+
+
+                //   setUpList(dummies);
 
 
 
