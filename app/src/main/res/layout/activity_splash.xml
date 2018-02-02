@@ -5,7 +5,7 @@
     android:id="@+id/activity_splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="in.htec.visitrec.Splash">
+    tools:context="in.htec.visitrec.AddVisit">
 <ScrollView
     android:layout_above="@+id/send"
     android:layout_width="match_parent"

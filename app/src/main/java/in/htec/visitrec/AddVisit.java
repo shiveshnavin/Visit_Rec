@@ -33,7 +33,9 @@ import in.htec.visitrec.database.House;
 import in.htec.visitrec.database.Request;
 import in.htec.visitrec.utils.GenricCallback;
 
-public class Splash extends AppCompatActivity {
+import static in.htec.visitrec.Constants.API_POST_IMAGE_UPLOAD;
+
+public class AddVisit extends AppCompatActivity {
 
     public Context ctx;
     public Activity act;
@@ -152,7 +154,7 @@ public class Splash extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-               send();
+                upload();
 
 
             }
@@ -321,6 +323,30 @@ public class Splash extends AppCompatActivity {
     }
 
 
+    public void upload()
+    {
+
+        String url=Constants.HOST+API_POST_IMAGE_UPLOAD;
+        AndroidNetworking.upload(url).addMultipartFile("file",new File(path)).build().getAsString(new StringRequestListener() {
+            @Override
+            public void onResponse(String response) {
+                utl.l(response);
+
+
+
+
+            }
+
+            @Override
+            public void onError(ANError ANError) {
+
+                utl.snack(act,"Error while Uploading !");
+            }
+        });
+
+
+
+    }
     public void send()
     {
         TextView field1=(TextView)findViewById(R.id.field1);

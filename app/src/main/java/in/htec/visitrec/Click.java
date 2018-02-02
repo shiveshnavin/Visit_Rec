@@ -7,19 +7,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Toast;
-
-import net.bozho.easycamera.DefaultEasyCamera;
-import net.bozho.easycamera.EasyCamera;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -118,7 +113,7 @@ public class Click extends AppCompatActivity {
                             utl.showDig(false,ctx);
 
                             utl.l("Bitmap Size : "+(new File(filename).length()));
-                            Intent it=new Intent(ctx,Splash.class);
+                            Intent it=new Intent(ctx,AddVisit.class);
                             it.putExtra("img",filename);
                             startActivity(it);
 
