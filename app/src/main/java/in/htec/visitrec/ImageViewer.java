@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -15,6 +16,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.squareup.picasso.Picasso;
 
+import in.htec.visitrec.adapters.GRecyclerAdapter;
 import in.htec.visitrec.utils.ZoomImageView;
 
 
@@ -42,6 +44,19 @@ public class ImageViewer extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_48dp);
 
+        String jstr=getIntent().getStringExtra("jstr");
+        String igmg=getIntent().getStringExtra("img");
+
+        if(jstr==null)
+        {
+            finish();
+
+        }
+        GRecyclerAdapter.Dummy dm=utl.js.fromJson(jstr, GRecyclerAdapter.Dummy.class);
+
+
+        TextView data = (TextView) findViewById(R.id.data);
+        data.setText(dm.getData( ));
 
 
         utl.showDig(true,ImageViewer.this);

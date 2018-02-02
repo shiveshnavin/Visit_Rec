@@ -38,6 +38,9 @@ public class Login extends AppCompatActivity {
         act=this;
 
         setContentView(R.layout.activity_login);
+
+        utl.setKey("ipaddr","http://192.168.43.32/visitrec",ctx);
+
         getData();
         wing=(Spinner)findViewById(R.id.wing);
 
@@ -49,13 +52,14 @@ public class Login extends AppCompatActivity {
             finish();
         }
 
+
+
         findViewById(R.id.reset).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
                 utl.setKey("loggein",null,ctx);
-                utl.setKey("ipaddr",null,ctx);
 
                 getData();
 

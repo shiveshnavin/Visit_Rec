@@ -46,6 +46,11 @@ public class AddVisit extends AppCompatActivity {
     Spinner houseno;
 
 
+    @Override
+    protected void onDestroy() {
+        utl.showDig(false,ctx);
+        super.onDestroy();
+    }
 
     Request rq;
 
@@ -340,24 +345,25 @@ public class AddVisit extends AppCompatActivity {
 
                     JSONObject j=new JSONObject(response);
                     final String url=j.getString("link");
+                    utl.l("img","Got upload link : "+url);
                     AndroidNetworking.get(url).build().getAsBitmap(new BitmapRequestListener() {
                         @Override
                         public void onResponse(Bitmap response) {
                             if(response!=null){
 
-                                utl.l("img","Image Upload Success");
+                                utl.l("img","Image Upload Success : Image size : "+response.getByteCount());
                                 send(url);
                             }
                             else {
 
-                                utl.snack(act,"Error while Uploading !");
+                                fail();
 
                             }
                         }
 
                         @Override
                         public void onError(ANError ANError) {
-                            utl.snack(act,"Error while Uploading !");
+                            fail("Please Retry Image Upload");
 
                         }
                     });
@@ -365,7 +371,7 @@ public class AddVisit extends AppCompatActivity {
 
                 }catch (Exception e)
                 {
-                    utl.snack(act,"Error while Uploading !");
+                    fail();
 
                     e.printStackTrace();
                 }
@@ -377,13 +383,31 @@ public class AddVisit extends AppCompatActivity {
             @Override
             public void onError(ANError ANError) {
 
-                utl.snack(act,"Error while Uploading !");
+                fail();
             }
         });
 
 
 
     }
+    private void fail()
+    {
+
+        utl.showDig(false,ctx);
+        utl.snack(act,"Error while Uploading !");
+
+
+    }
+
+    private void fail(String  r)
+    {
+
+        utl.showDig(false,ctx);
+        utl.snack(act,"Error while Uploading ! "+r);
+
+
+    }
+
     public void send(String image_url)
     {
         TextView field1=(TextView)findViewById(R.id.field1);

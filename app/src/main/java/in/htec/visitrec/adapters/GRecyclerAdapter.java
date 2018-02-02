@@ -43,7 +43,7 @@ public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.Cust
         final Dummy item=feedItemList.get(i);
 
         customViewHolder.textView.setText(Html.fromHtml(item.getData(i)));
-
+        customViewHolder.img.setVisibility(View.GONE);
         customViewHolder.img.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -62,6 +62,7 @@ public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.Cust
             public void onClick(View view) {
                 Intent it=new Intent(mContext, ImageViewer.class);
                 it.putExtra("img",item.image);
+                it.putExtra("jstr",utl.js.toJson(item));
                 mContext.startActivity(it);
             }
         });
@@ -107,6 +108,17 @@ public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.Cust
             String data="";
             data=data+"<b>Visit ID #"+id+"</b>";
             data=data+"\n<br><b>Name : </b>"+field0;
+            data=data+"\n<br><b>House No : </b>"+houseNo;
+            data=data+"\n<br><b>Time : </b>"+dateTime;
+
+            return data;
+        }
+
+        public String getData( )
+        {
+            String data="";
+            data=data+"<b>Visit ID #"+id+"</b>";
+            data=data+"\n<br><b>Name : </b>"+field0;
             data=data+"\n<br><b>Phone : </b>"+field1;
             data=data+"\n<br><b>House No : </b>"+houseNo;
             data=data+"\n<br><b>Purpose : </b>"+field2;
@@ -117,7 +129,6 @@ public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.Cust
 
             return data;
         }
-
     }
 
 
