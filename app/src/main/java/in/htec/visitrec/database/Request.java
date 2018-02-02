@@ -15,5 +15,11 @@ public class Request {
     public String field5;
     public String field6;
 
+    public Request(){
+
+    }
+
+
+
 
 }

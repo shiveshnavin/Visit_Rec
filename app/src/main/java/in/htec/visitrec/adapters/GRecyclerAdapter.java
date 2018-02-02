@@ -101,7 +101,6 @@ public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.Cust
 
     public static class Dummy extends Visit
     {
-        String data="TEST";
 
         public String getData(int i)
         {

@@ -39,7 +39,7 @@ public class Login extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        utl.setKey("ipaddr","http://192.168.43.32/visitrec",ctx);
+        utl.setKey("ipaddr",Constants.HOST,ctx);
 
         getData();
         wing=(Spinner)findViewById(R.id.wing);

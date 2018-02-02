@@ -17,10 +17,13 @@ import android.widget.LinearLayout;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -102,7 +105,7 @@ public class Home extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                startActivity(new Intent(ctx,Click.class));
+              start();
 
 
             }
@@ -132,6 +135,72 @@ public class Home extends AppCompatActivity {
 
     }
 
+    private void start()
+    {
+
+
+        utl.inputDialog(ctx, "Enter Phone", "Enter Phone No. of visitor !", utl.TYPE_PHONE, new utl.InputDialogCallback() {
+            @Override
+            public void onDone(String text) {
+
+
+                final Intent newc=new Intent(ctx,Click.class);
+                newc.putExtra("field1",text);
+
+                String url=Constants.HOST+Constants.API_GET_CKECK_VISITOR+"?field1="+ URLEncoder.encode(text);
+                utl.l("visit",url);
+                AndroidNetworking.get(url).build().getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        try
+                        {
+                            utl.l("visit"+response);
+                            JSONArray j=new JSONArray(response);
+                            if(response.length()>0){
+                                JSONObject vi=j.getJSONObject(0);
+
+                                Visit vs=utl.js.fromJson(vi.toString(),Visit.class);
+                                if(vs!=null){
+
+                                    final Intent it=new Intent(ctx,AddVisit.class);
+
+                                    it.putExtra("img",vi.getString("image"));
+                                    it.putExtra("field1",vi.getString("field1"));
+                                    it.putExtra("visit",vi.toString());
+
+
+                                    startActivity(it);
+                                    return;
+                                }
+
+
+
+
+
+                            }
+
+
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                        startActivity(newc);
+                    }
+
+                    @Override
+                    public void onError(ANError ANError) {
+                        startActivity(newc);
+
+                    }
+                });
+
+
+
+            }
+        });
+
+    }
 
     @Override
     protected void onPostResume() {

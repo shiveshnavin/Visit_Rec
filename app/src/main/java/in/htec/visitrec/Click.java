@@ -114,6 +114,9 @@ public class Click extends AppCompatActivity {
 
                             utl.l("Bitmap Size : "+(new File(filename).length()));
                             Intent it=new Intent(ctx,AddVisit.class);
+                            String field1=getIntent().getStringExtra("field1");
+
+                            it.putExtra("field1",field1);
                             it.putExtra("img",filename);
                             startActivity(it);
 

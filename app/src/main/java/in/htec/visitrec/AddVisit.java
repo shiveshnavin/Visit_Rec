@@ -2,6 +2,7 @@ package in.htec.visitrec;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -34,6 +35,7 @@ import in.htec.visitrec.adapters.HousesSpinAdapter;
 import in.htec.visitrec.adapters.SimpleSpinAdapter;
 import in.htec.visitrec.database.House;
 import in.htec.visitrec.database.Request;
+import in.htec.visitrec.database.Visit;
 import in.htec.visitrec.utils.GenricCallback;
 
 import static in.htec.visitrec.Constants.API_POST_IMAGE_UPLOAD;
@@ -53,8 +55,9 @@ public class AddVisit extends AppCompatActivity {
     }
 
     Request rq;
+    Visit vs;
 
-    String path;
+    String path,field1;
     ArrayList<House> houses;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,18 @@ public class AddVisit extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         path=getIntent().getStringExtra("img");
+        field1=getIntent().getStringExtra("field1");
+
+
+        String jstr=getIntent().getStringExtra("visit");
+        vs=utl.js.fromJson(jstr,Visit.class);
+        if(vs!=null){
+            populate(vs);
+        }
+
+        TextView field1t = (TextView) findViewById(R.id.field1);
+        field1t.setText(field1);
+
         utl.l(path);
         field3=(Spinner)findViewById(R.id.field3);
 
@@ -76,6 +91,8 @@ public class AddVisit extends AppCompatActivity {
                 Context mContext=ctx;
                 Intent it=new Intent(mContext, ImageViewer.class);
                 it.putExtra("img",path);
+                it.putExtra("jstr",utl.js.toJson(vs));
+
                 mContext.startActivity(it);
 
                /* utl.snack(view, "Change Image ?", "CHANGE", new GenricCallback() {
@@ -126,7 +143,6 @@ public class AddVisit extends AppCompatActivity {
 
         work_visit.setChecked(true);
 
-        Uri ur=Uri.fromFile(new File(path));
 
         //imageView.setImageURI(ur);
 
@@ -172,6 +188,24 @@ public class AddVisit extends AppCompatActivity {
 
     }
 
+    private void populate(Visit vs)
+    {
+
+        TextView field1=(TextView)findViewById(R.id.field1);
+
+
+        TextView email=(TextView)findViewById(R.id.field0);
+//        RadioButton field2=(RadioButton)findViewById(R.id.field2);
+        //Spinner field3=(Spinner)findViewById(R.id.field3);
+        TextView field4=(TextView)findViewById(R.id.field4);
+        TextView field5=(TextView)findViewById(R.id.field5);
+
+        email.setText(vs.field0);
+        field1.setText(vs.field1);
+
+
+
+    }
     ArrayList<String> purposes,wings;
     public void getData()
     {
@@ -346,27 +380,8 @@ public class AddVisit extends AppCompatActivity {
                     JSONObject j=new JSONObject(response);
                     final String url=j.getString("link");
                     utl.l("img","Got upload link : "+url);
-                    AndroidNetworking.get(url).build().getAsBitmap(new BitmapRequestListener() {
-                        @Override
-                        public void onResponse(Bitmap response) {
-                            if(response!=null){
 
-                                utl.l("img","Image Upload Success : Image size : "+response.getByteCount());
-                                send(url);
-                            }
-                            else {
-
-                                fail();
-
-                            }
-                        }
-
-                        @Override
-                        public void onError(ANError ANError) {
-                            fail("Please Retry Image Upload");
-
-                        }
-                    });
+                    checkImage(url);
 
 
                 }catch (Exception e)
@@ -387,6 +402,34 @@ public class AddVisit extends AppCompatActivity {
             }
         });
 
+
+
+    }
+
+    private void checkImage(final String  url)
+    {
+
+        AndroidNetworking.get(url).build().getAsBitmap(new BitmapRequestListener() {
+            @Override
+            public void onResponse(Bitmap response) {
+                if(response!=null){
+
+                    utl.l("img","Image Upload Success : Image size : "+response.getByteCount());
+                    send(url);
+                }
+                else {
+
+                    fail();
+
+                }
+            }
+
+            @Override
+            public void onError(ANError ANError) {
+                fail("Please Retry Image Upload");
+
+            }
+        });
 
 
     }
@@ -483,7 +526,16 @@ public class AddVisit extends AppCompatActivity {
 
                     if(response.contains("Successful"))
                     {
-                        utl.diag(ctx,"Visit Registered !","Visit has been registered in Database Succesfully !");
+                        utl.diag(ctx, "Visit Registered !", "Visit has been registered in Database Succesfully !", "OK", new utl.ClickCallBack() {
+                            @Override
+                            public void done(DialogInterface dialogInterface) {
+                                Intent it=new Intent(ctx,Home.class);
+                                it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                                startActivity(it);
+                                finish();
+                            }
+                        });
                     }
 
                 }

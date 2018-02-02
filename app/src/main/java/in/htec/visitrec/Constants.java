@@ -13,7 +13,7 @@ public class Constants {
 
 
 
-    public static String HOST= "http://192.168.43.32/visitrec";
+    public static String HOST= "http://tranquille.fairuse.org/cms";
 
     //@ID (ID of house)
     public static String API_GET_VISITS="/api/get_tours.php";
@@ -24,6 +24,7 @@ public class Constants {
     public static String API_ADMIN_LOGIN_GET="/api/login_admin.php";
     public static String API_GET_NOTIFICATIONS="/api/get_notifications.php";
     public static String API_POST_IMAGE_UPLOAD="/api/upload_image.php";
+    public static String API_GET_CKECK_VISITOR="/api/check_visitor.php";
 
 
 
