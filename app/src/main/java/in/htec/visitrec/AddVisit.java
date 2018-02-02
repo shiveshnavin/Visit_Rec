@@ -3,6 +3,7 @@ package in.htec.visitrec;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,10 +19,12 @@ import android.widget.TextView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.BitmapRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.net.URLEncoder;
@@ -326,12 +329,46 @@ public class AddVisit extends AppCompatActivity {
     public void upload()
     {
 
+        utl.showDig(true,ctx);
         String url=Constants.HOST+API_POST_IMAGE_UPLOAD;
         AndroidNetworking.upload(url).addMultipartFile("file",new File(path)).build().getAsString(new StringRequestListener() {
             @Override
             public void onResponse(String response) {
                 utl.l(response);
 
+                try{
+
+                    JSONObject j=new JSONObject(response);
+                    final String url=j.getString("link");
+                    AndroidNetworking.get(url).build().getAsBitmap(new BitmapRequestListener() {
+                        @Override
+                        public void onResponse(Bitmap response) {
+                            if(response!=null){
+
+                                utl.l("img","Image Upload Success");
+                                send(url);
+                            }
+                            else {
+
+                                utl.snack(act,"Error while Uploading !");
+
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError ANError) {
+                            utl.snack(act,"Error while Uploading !");
+
+                        }
+                    });
+
+
+                }catch (Exception e)
+                {
+                    utl.snack(act,"Error while Uploading !");
+
+                    e.printStackTrace();
+                }
 
 
 
@@ -347,7 +384,7 @@ public class AddVisit extends AppCompatActivity {
 
 
     }
-    public void send()
+    public void send(String image_url)
     {
         TextView field1=(TextView)findViewById(R.id.field1);
 
@@ -391,7 +428,15 @@ public class AddVisit extends AppCompatActivity {
 
 
             ANRequest.MultiPartBuilder mp=new ANRequest.MultiPartBuilder(url);
-            mp.addMultipartFile("file",new File(path));
+            utl.l("img","Upload Image URL : "+image_url);
+            if(image_url!=null){
+                mp.addMultipartParameter("image",""+image_url);
+
+            }else {
+                mp.addMultipartFile("file",new File(path));
+
+            }
+
             mp.addMultipartParameter("house_id",""+rq.house.id);
             mp.addMultipartParameter("field0",""+rq.field0);
             mp.addMultipartParameter("field1",""+rq.field1);
@@ -405,7 +450,6 @@ public class AddVisit extends AppCompatActivity {
             utl.l(utl.js.toJson(rq));
 
             utl.l(url);
-            utl.showDig(true,ctx);
 
             mp.build().getAsString(new StringRequestListener() {
                 @Override
