@@ -3,6 +3,7 @@ package in.htec.visitrec;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -56,7 +57,7 @@ public class ImageViewer extends AppCompatActivity {
 
 
         TextView data = (TextView) findViewById(R.id.data);
-        data.setText(dm.getData( ));
+        data.setText(Html.fromHtml(dm.getData() ));
 
 
         utl.showDig(true,ImageViewer.this);
