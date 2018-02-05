@@ -77,5 +77,12 @@ public class House {
 
     }
 
+    public String getData(){
+
+        return ""+no+" - "+owner;
+
+
+    }
+
 
 }

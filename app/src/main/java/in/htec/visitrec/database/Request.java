@@ -1,12 +1,24 @@
 package in.htec.visitrec.database;
 
+import java.util.ArrayList;
+
 /**
  * Created by shivesh on 10/11/17.
  */
 
 public class Request {
 
-    public House house;
+    public ArrayList<House> houses;
+    public String house(){
+        String hss="";
+        for (House h:houses
+             ) {
+
+            hss=h.id+":"+hss;
+
+        }
+        return hss;
+    }
     public String field0;
     public String field1;
     public String field2;

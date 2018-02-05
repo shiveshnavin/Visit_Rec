@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -31,6 +33,7 @@ import java.io.File;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import in.htec.visitrec.adapters.HouseRecyclerAdapter;
 import in.htec.visitrec.adapters.HousesSpinAdapter;
 import in.htec.visitrec.adapters.SimpleSpinAdapter;
 import in.htec.visitrec.database.House;
@@ -58,7 +61,7 @@ public class AddVisit extends AppCompatActivity {
     Visit vs;
 
     String path,field1;
-    ArrayList<House> houses;
+    ArrayList<House> houses ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,6 +166,7 @@ public class AddVisit extends AppCompatActivity {
         houseno =(Spinner)findViewById(R.id.houseno);
 
         houses=new ArrayList<>();
+        rq.houses=new ArrayList<>();
 
      /*   for(int i=0;i<10;i++)
         {
@@ -177,8 +181,13 @@ public class AddVisit extends AppCompatActivity {
         findViewById(R.id.send).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                utl.showDig(true,ctx);
 
-                upload();
+                if(path.contains("http"))
+                    checkImage(path);
+
+                else
+                     upload();
 
 
             }
@@ -368,7 +377,6 @@ public class AddVisit extends AppCompatActivity {
     public void upload()
     {
 
-        utl.showDig(true,ctx);
         String url=Constants.HOST+API_POST_IMAGE_UPLOAD;
         AndroidNetworking.upload(url).addMultipartFile("file",new File(path)).build().getAsString(new StringRequestListener() {
             @Override
@@ -473,7 +481,7 @@ public class AddVisit extends AppCompatActivity {
         rq.field0=email.getText().toString();
 
       final  String body="Visitor Details :- \n"+
-                "House : "+rq.house.no+"\n"+
+                "House : "+rq.house()+"\n"+
                 "Field 0 : "+rq.field0+"\n"+
               "Field 1 : "+rq.field1+"\n"+
                 "Field 2 : "+rq.field2+"\n"+
@@ -504,7 +512,7 @@ public class AddVisit extends AppCompatActivity {
 
             }
 
-            mp.addMultipartParameter("house_id",""+rq.house.id);
+            mp.addMultipartParameter("house_id",""+rq.house());
             mp.addMultipartParameter("field0",""+rq.field0);
             mp.addMultipartParameter("field1",""+rq.field1);
             mp.addMultipartParameter("field2",""+rq.field2);
@@ -522,7 +530,7 @@ public class AddVisit extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     utl.showDig(false,ctx);
-                    utl.l(response);
+                    utl.l("REPSO"+response);
 
                     if(response.contains("Successful"))
                     {
@@ -537,6 +545,7 @@ public class AddVisit extends AppCompatActivity {
                             }
                         });
                     }
+
 
                 }
 
@@ -586,10 +595,17 @@ public class AddVisit extends AppCompatActivity {
 
     }
 
-    public void setUpUGS(final ArrayList<House> grps)
+     public void setUpUGS(final ArrayList<House> grps)
     {
 
         final ArrayList<House> hs=new ArrayList<>();
+
+        House def=new House();
+        def.id="-1";
+        def.no="SELECT";
+        def.owner="HOUSE";
+
+        hs.add(def);
 
         for(int i=0;i<grps.size();i++)
         {
@@ -614,6 +630,8 @@ public class AddVisit extends AppCompatActivity {
 
         houseno.setAdapter(adap);
 
+
+
                 houseno.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
                     @Override
@@ -622,9 +640,13 @@ public class AddVisit extends AppCompatActivity {
 
 
 
+                        if(!hs.get(position).id.equals("-1")) {
 
-                        rq.house=hs.get(position);
-                        setTitle("To: "+hs.get(position).owner);
+                            rq.houses.add(hs.get(position));
+                            setSelectedHouses(rq.houses);
+                        }
+
+                        //setTitle("To: "+hs.get(position).owner);
 
 
 
@@ -709,6 +731,30 @@ public class AddVisit extends AppCompatActivity {
 
     }
 
+    private void setSelectedHouses(ArrayList<House> houss)
+    {
+
+
+        HouseRecyclerAdapter adap=new HouseRecyclerAdapter(ctx,houss){
+
+            @Override
+            public void remove(int id, House cat) {
+                super.remove(id, cat);
+
+                rq.houses.remove(cat);
+                notifyDataSetChanged();
+
+            }
+        };
+        RecyclerView r = (RecyclerView) findViewById(R.id.houses);
+        r.setLayoutManager(new LinearLayoutManager(ctx));
+        r.setNestedScrollingEnabled(false);
+        r.setAdapter(adap);
+
+
+
+
+    }
 
 
 

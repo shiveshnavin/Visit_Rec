@@ -19,12 +19,13 @@ public class Constants {
     public static String API_GET_VISITS="/api/get_tours.php";
     public static String API_GET_PURPOSES="/api/get_purposes.php";
     public static String API_GET_HOUSES="/api/get_places.php";
-    public static String API_ADD_VISIT="/api/add_tour.php";
+    public static String API_ADD_VISIT="/api/add_tour_v2.php";
     public static String API_USER_LOGIN_GET="/api/login_house.php";
     public static String API_ADMIN_LOGIN_GET="/api/login_admin.php";
     public static String API_GET_NOTIFICATIONS="/api/get_notifications.php";
     public static String API_POST_IMAGE_UPLOAD="/api/upload_image.php";
     public static String API_GET_CKECK_VISITOR="/api/check_visitor.php";
+    public static String API_EXIT_VISITOR="/api/mark_exit.php";
 
 
 

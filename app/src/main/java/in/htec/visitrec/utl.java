@@ -659,7 +659,11 @@ public class utl {
         });
 
         AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        try {
+            alertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -328,7 +328,28 @@ public class Home extends AppCompatActivity {
 
 
 
-        GRecyclerAdapter adapter=new GRecyclerAdapter(ctx,dumm);
+        GRecyclerAdapter adapter=new GRecyclerAdapter(ctx,dumm){
+            @Override
+            public void exit(Visit cat) {
+                super.exit(cat);
+
+                    utl.l("Exiting!");
+                    String url=Constants.HOST+Constants.API_EXIT_VISITOR+"?visit_id="+cat.id;
+                    AndroidNetworking.get(url).build().getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            utl.l("EXit succ");
+                            onPostResume();
+                        }
+
+                        @Override
+                        public void onError(ANError ANError) {
+                            utl.l("EXit fail "+ANError.getErrorDetail());
+
+                        }
+                    });
+            }
+        };
         rec.setLayoutManager(new LinearLayoutManager(act));
         rec.setAdapter(adapter);
 

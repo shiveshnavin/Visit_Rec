@@ -17,6 +17,7 @@ import java.util.List;
 
 import in.htec.visitrec.ImageViewer;
 import in.htec.visitrec.R;
+import in.htec.visitrec.database.House;
 import in.htec.visitrec.database.Visit;
 import in.htec.visitrec.utl;
 
@@ -40,9 +41,9 @@ public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.Cust
     @Override
     public void onBindViewHolder(final CustomViewHolder customViewHolder, final int i) {
 
-        final Dummy item=feedItemList.get(i);
+        final Dummy item=feedItemList.get(customViewHolder.getAdapterPosition());
 
-        customViewHolder.textView.setText(Html.fromHtml(item.getData(i)));
+        customViewHolder.textView.setText(Html.fromHtml(item.getData(customViewHolder.getAdapterPosition())));
         customViewHolder.img.setVisibility(View.GONE);
         customViewHolder.img.postDelayed(new Runnable() {
             @Override
@@ -67,6 +68,15 @@ public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.Cust
             }
         });
 
+        if(!item.getExit().contains("NOT")){
+            customViewHolder.exit.setVisibility(View.GONE);
+        }
+        customViewHolder.exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exit(item);
+            }
+        });
 
 
        // Picasso.with(mContext).load(item.image).placeholder(R.drawable.ic_camera_white_36dp).into(customViewHolder.img);
@@ -82,7 +92,7 @@ public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.Cust
 
         TextView textView;
         View base;
-        ImageView img;
+        ImageView img,exit;
 
 
         public CustomViewHolder(View v) {
@@ -91,6 +101,7 @@ public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.Cust
             base=v;
             textView=(TextView) base.findViewById(R.id.textView);
             img=(ImageView)base.findViewById(R.id.img);
+            exit=(ImageView)base.findViewById(R.id.exit);
 
 
 
@@ -98,6 +109,11 @@ public class GRecyclerAdapter extends RecyclerView.Adapter<GRecyclerAdapter.Cust
         }
     }
 
+    public void exit(Visit cat){
+
+
+
+    }
 
     public static class Dummy extends Visit
     {

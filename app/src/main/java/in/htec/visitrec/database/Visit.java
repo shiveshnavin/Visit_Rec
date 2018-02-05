@@ -43,9 +43,22 @@ public class Visit {
     @SerializedName("image")
     @Expose
     public String image;
+    @SerializedName("exit")
+    @Expose
+    public String exit;
 
 
 
+    public String getExit(){
+
+
+        if(exit.contains("0000")){
+            return "NOT_EXITED";
+        }
+
+        return exit;
+
+    }
 
 
 
@@ -73,6 +86,7 @@ public class Visit {
         data=data+"\n<br><b>Purpose 3 : </b>"+field4;
         data=data+"\n<br><b>Time : </b>"+dateTime;
         data=data+"\n<br><b>Visiting From : </b>"+field5;
+        data=data+"\n<br><b>Exited : </b>"+getExit();
 
         return data;
     }
